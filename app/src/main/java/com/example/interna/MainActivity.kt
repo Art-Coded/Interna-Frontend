@@ -17,6 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.interna.Login.LoginScreen
 import com.example.interna.ui.theme.InternaTheme
 //FRONTEND INTERNA
 class MainActivity : ComponentActivity() {
@@ -30,7 +31,7 @@ class MainActivity : ComponentActivity() {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     NavHost(
                         navController = navController,
-                        startDestination = "onboarding",
+                        startDestination = "login",
                         modifier = Modifier.padding(innerPadding),
                         enterTransition = { fadeIn(animationSpec = tween(200)) },
                         exitTransition = { fadeOut(animationSpec = tween(200)) }
@@ -42,13 +43,11 @@ class MainActivity : ComponentActivity() {
 //
 //                            )
 //                        }
-//                        composable("login") {
-//                            LoginScreen(
-//                                onBoardingClick = { navController.navigate("onboarding") {popUpTo("login") {inclusive = true}} },
-//                                signupClick = { navController.navigate("signup") {popUpTo("login") {inclusive = true}} },
-//                                homeClick = { navController.navigate("BottomNav") {popUpTo("login") {inclusive = true}} }
-//                            )
-//                        }
+                        composable("login") {
+                            LoginScreen(
+                                homeClick = { navController.navigate("BottomNav") {popUpTo("login") {inclusive = true}} }
+                            )
+                        }
 //                        composable("signup") {
 //                            SignupScreen(
 //                                loginClick = { navController.navigate("login") {popUpTo("signup") {inclusive = true}} },
