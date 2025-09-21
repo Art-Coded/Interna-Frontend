@@ -18,4 +18,14 @@ val calm_white = Color(0xFFDEF4F6)
 
 val grey = Color(0xFF2d3733)
 
-val light_green = Color(0xFF23dC9F)
+
+
+val dark_white = Color(0xFFC6C8CA)
+
+val indigo = Color(0xFF5E35B1)
+
+val balloon_color = Color(0xFF212121)
+
+
+
+
