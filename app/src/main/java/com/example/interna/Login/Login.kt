@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
@@ -30,6 +32,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
@@ -46,7 +49,14 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.interna.R
+import com.example.interna.ui.theme.balloon_color
 import com.example.interna.ui.theme.blue_green
+import com.example.interna.ui.theme.indigo
+import com.skydoves.balloon.BalloonAnimation
+import com.skydoves.balloon.compose.Balloon
+import com.skydoves.balloon.compose.rememberBalloonBuilder
+import com.skydoves.balloon.compose.setBackgroundColor
+import com.skydoves.balloon.compose.setTextColor
 
 @Composable
 fun LoginScreen(homeClick: () -> Unit) {
@@ -241,7 +251,7 @@ fun LoginScreen(homeClick: () -> Unit) {
         ) {
             Button(
                 onClick = {
-                    //homeClick()// TODO: Navigate to Login
+                    homeClick()// TODO: Navigate to Login
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = blue_green,
@@ -257,24 +267,47 @@ fun LoginScreen(homeClick: () -> Unit) {
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            Text(
-                text = "Don't have an account?",
-                fontSize = 14.sp,
-                modifier = Modifier.padding(top = 8.dp)
-            )
-            Text(
-                text = "Contact your local OJT Adviser",
-                fontSize = 14.sp,
-                fontWeight = FontWeight.Bold,
-                color = blue_green,
-                modifier = Modifier
-                    .padding(top = 4.dp)
-                    .clickable {
+            val background = MaterialTheme.colorScheme.onSurface
 
+            val builder = rememberBalloonBuilder {
+                setArrowSize(10)
+                setArrowPosition(0.5f)
+                setCornerRadius(8f)
+                setPadding(12)
+                setBalloonAnimation(BalloonAnimation.OVERSHOOT)
+                setBackgroundColor(background)
+            }
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text("Don't have an account?",
+                    fontSize = 14.sp,
+                    modifier = Modifier.padding(top = 8.dp))
+
+                Balloon(
+                    builder = builder,
+                    balloonContent = {
+                        Text("Please contact your assigned\nOJT adviser for your account", fontSize = 14.sp, color = MaterialTheme.colorScheme.background)
                     }
-            )
+                ) { balloonWindow ->
+                    IconButton(
+                        onClick = { balloonWindow.showAlignTop() },
+                        modifier = Modifier
+                            .size(40.dp)
+                            .padding(top = 6.dp)
+                            .alpha(0.8f)
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_info),
+                            contentDescription = "Info"
+                        )
+                    }
+                }
+            }
 
-            Spacer(modifier = Modifier.height(16.dp))
+
+            Spacer(modifier = Modifier.height(32.dp))
 
             Text(
                 text = "Developed by Art",

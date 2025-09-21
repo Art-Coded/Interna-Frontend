@@ -1,5 +1,7 @@
 package com.example.interna
 
+import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -9,15 +11,21 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.luminance
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.interna.Login.LoginScreen
+import com.example.interna.Main.BottomNav.BottomNavScreen
 import com.example.interna.ui.theme.InternaTheme
 //FRONTEND INTERNA
 class MainActivity : ComponentActivity() {
@@ -27,6 +35,45 @@ class MainActivity : ComponentActivity() {
         setContent {
             InternaTheme {
                 val navController = rememberNavController()
+
+                val view = LocalView.current
+                val statusBarColor = MaterialTheme.colorScheme.background
+                val navBarColor = MaterialTheme.colorScheme.background
+
+                SideEffect {
+                    val window = (view.context as ComponentActivity).window
+
+
+                    window.statusBarColor = statusBarColor.toArgb() // status bar color
+                    window.navigationBarColor = navBarColor.toArgb() // navigation bar color
+                    window.setBackgroundDrawable(ColorDrawable(statusBarColor.toArgb())) // keyboard background color
+
+                    // Status bar icons: light/dark based on background
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        val lightStatusIcons = statusBarColor.luminance() > 0.5f
+                        window.decorView.systemUiVisibility =
+                            if (lightStatusIcons) {
+                                window.decorView.systemUiVisibility or
+                                        android.view.View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                            } else {
+                                window.decorView.systemUiVisibility and
+                                        android.view.View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv()
+                            }
+                    }
+
+                    // Navigation bar icons/buttons: light/dark (Android 8.0+)
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        val lightNavIcons = navBarColor.luminance() > 0.5f
+                        window.decorView.systemUiVisibility =
+                            if (lightNavIcons) {
+                                window.decorView.systemUiVisibility or
+                                        android.view.View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+                            } else {
+                                window.decorView.systemUiVisibility and
+                                        android.view.View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR.inv()
+                            }
+                    }
+                }
 
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     NavHost(
@@ -54,9 +101,9 @@ class MainActivity : ComponentActivity() {
 //                                loginClick1 = { navController.navigate("login") {popUpTo("signup") {inclusive = true}} }
 //                            )
 //                        }
-//                        composable("BottomNav") {
-//                            BottomNavScreen()
-//                        }
+                        composable("BottomNav") {
+                            BottomNavScreen(rootNavController = navController)
+                        }
 
                     }
                 }
