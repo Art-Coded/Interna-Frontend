@@ -2,6 +2,9 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    id("kotlin-kapt") // REQUIRED for Hilt code generation
+    id("dagger.hilt.android.plugin") // REQUIRED for Hilt to work
+    id("kotlin-parcelize")
 }
 
 android {
@@ -57,4 +60,46 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    implementation(libs.androidx.foundation)
+
+    implementation(libs.androidx.navigation.compose)
+
+    implementation(libs.accompanist.navigation.animation)
+
+    implementation(libs.lottie.compose)
+
+    implementation(libs.androidx.foundation.v160)
+
+    implementation(libs.androidx.animation)
+
+    implementation(libs.androidx.foundation.vversion)
+
+    implementation (libs.accompanist.flowlayout)
+
+    implementation (libs.androidx.lifecycle.viewmodel.compose)
+
+    implementation(libs.firebase.firestore.ktx.v24103)
+
+    implementation (libs.androidx.datastore.preferences)
+
+    implementation("com.github.skydoves:balloon:1.6.13")
+
+    implementation(libs.coil.compose) // preload images before navigation to save memory (improves performance from loading images)
+
+    implementation(libs.hilt.android)                       //implementation("com.google.dagger:hilt-android:2.51")
+    kapt(libs.hilt.compiler)                                //kapt("com.google.dagger:hilt-compiler:2.51")
+    implementation(libs.androidx.hilt.navigation.compose)   //implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
+
+    // Room Database
+    implementation(libs.androidx.room.runtime)
+    kapt(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.ktx)
+
+    implementation("com.github.yalantis:ucrop:2.2.8") // image cropping after picking image from user's album
+
+    // Import the Firebase BoM
+    implementation(platform("com.google.firebase:firebase-bom:34.3.0"))
+    // Add the dependency for Cloud Storage (KTX is now included in the main module)
+    implementation(libs.firebase.storage)
 }
