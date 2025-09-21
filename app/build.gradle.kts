@@ -83,7 +83,7 @@ dependencies {
 
     implementation (libs.androidx.datastore.preferences)
 
-    implementation("com.github.skydoves:balloon:1.6.13")
+    implementation("com.github.skydoves:balloon-compose:1.6.13")
 
     implementation(libs.coil.compose) // preload images before navigation to save memory (improves performance from loading images)
 
