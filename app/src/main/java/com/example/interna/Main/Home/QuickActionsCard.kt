@@ -135,13 +135,13 @@ fun QuickActionsCard() {
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         Icon(
-                            painter = painterResource(id = R.drawable.ic_nosignal),
-                            contentDescription = "Offline Clock-In",
+                            painter = painterResource(id = R.drawable.ic_change),
+                            contentDescription = "Change Work Time",
                             tint = Color(0xFFFF9800),
                             modifier = Modifier.size(22.dp)
                         )
                         Spacer(modifier = Modifier.width(12.dp))
-                        Text("Request Offline Clock-In", fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurface)
+                        Text("Change Work Time", fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurface)
                     }
                 }
 
@@ -162,13 +162,13 @@ fun QuickActionsCard() {
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         Icon(
-                            painter = painterResource(id = R.drawable.ic_leave),
-                            contentDescription = "Request Leave",
+                            painter = painterResource(id = R.drawable.ic_overtime),
+                            contentDescription = "Request Overtime",
                             tint = Color(0xFF4CAF50),
                             modifier = Modifier.size(22.dp)
                         )
                         Spacer(modifier = Modifier.width(12.dp))
-                        Text("Request Leave", fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurface)
+                        Text("Request Overtime", fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurface)
                     }
                 }
 
