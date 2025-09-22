@@ -8,6 +8,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -31,11 +32,11 @@ fun AttendanceHistoryCard() {
     val lineColor = MaterialTheme.colorScheme.primary
 
     val attendanceList = listOf(
-        Triple("Monday", "09:01 AM - 06:03 PM", "Sept 15, 2025"),   // 9 hrs → ✅
-        Triple("Tuesday", "09:05 AM - 06:10 PM", "Sept 16, 2025"), // 9 hrs → ✅
-        Triple("Wednesday", "09:30 AM - 05:00 PM", "Sept 17, 2025"), // 7.5 hrs → ⚠ Late
-        Triple("Thursday", "09:08 AM - 06:07 PM", "Sept 18, 2025"), // ~9 hrs → ✅
-        Triple("Friday", "09:15 AM - 05:00 PM", "Sept 19, 2025")   // 7.75 hrs → ⚠ Late
+        Triple("Monday", "09:01 AM - 06:03 PM", "Sept 15, 2025"),   // ✅
+        Triple("Tuesday", "09:05 AM - 06:10 PM", "Sept 16, 2025"), // ✅
+        Triple("Wednesday", "09:30 AM - 05:00 PM", "Sept 17, 2025"), // ⚠ Late
+        Triple("Thursday", "---------------", "Sept 18, 2025"),     // ❌ Absent
+        Triple("Friday", "09:15 AM - 05:00 PM", "Sept 19, 2025")   // ⚠ Late
     )
 
     Card(
@@ -94,15 +95,23 @@ fun TimelineRow(
     isLast: Boolean,
     lineColor: Color
 ) {
-    // Parse total hours
-    val timeRange = time.split(" - ")
-    val formatter = SimpleDateFormat("hh:mm a", Locale.US)
-    val clockIn = formatter.parse(timeRange[0])
-    val clockOut = formatter.parse(timeRange[1])
-    val diffMinutes = ((clockOut.time - clockIn.time) / (1000 * 60)).toInt()
-    val totalHours = diffMinutes / 60.0
+    val isAbsent = time == "---------------"
 
-    val isLate = totalHours < 8
+    val totalHours: Double
+    val isLate: Boolean
+
+    if (!isAbsent) {
+        val timeRange = time.split(" - ")
+        val formatter = SimpleDateFormat("hh:mm a", Locale.US)
+        val clockIn = formatter.parse(timeRange[0])
+        val clockOut = formatter.parse(timeRange[1])
+        val diffMinutes = ((clockOut.time - clockIn.time) / (1000 * 60)).toInt()
+        totalHours = diffMinutes / 60.0
+        isLate = totalHours < 8
+    } else {
+        totalHours = 0.0
+        isLate = false
+    }
 
     Row(
         modifier = Modifier
@@ -155,11 +164,20 @@ fun TimelineRow(
                 fontWeight = FontWeight.SemiBold,
                 lineHeight = 6.sp
             )
-            Text(
-                text = time,
-                fontSize = 12.sp,
-                lineHeight = 6.sp
-            )
+            if (!isAbsent) {
+                Text(
+                    text = time,
+                    fontSize = 12.sp,
+                    lineHeight = 6.sp
+                )
+            } else {
+                Text(
+                    text = "---------------",
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Medium
+                )
+            }
+
             Text(
                 text = date,
                 fontSize = 12.sp,
@@ -167,43 +185,67 @@ fun TimelineRow(
             )
         }
 
-        // Total hours (right side)
-        Column(
-            horizontalAlignment = Alignment.End,
-            verticalArrangement = Arrangement.Center,
-            modifier = Modifier.padding(end = 4.dp)
-        ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
+        // Right side
+        if (!isAbsent) {
+            Column(
+                horizontalAlignment = Alignment.End,
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier.padding(end = 4.dp)
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(
+                        imageVector = if (isLate) Icons.Default.Warning else Icons.Default.Check,
+                        contentDescription = null,
+                        tint = if (isLate) Color.Red else blue_green,
+                        modifier = Modifier.size(16.dp)
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(
+                        text = "${"%.1f".format(totalHours)} hrs",
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                }
+
+                if (isLate) {
+                    Spacer(modifier = Modifier.height(2.dp))
+                    Box(
+                        modifier = Modifier
+                            .background(Color.Red.copy(alpha = 0.2f), RoundedCornerShape(6.dp))
+                            .padding(horizontal = 6.dp, vertical = 2.dp)
+                    ) {
+                        Text(
+                            text = "Late",
+                            fontSize = 10.sp,
+                            color = Color.Red,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                    }
+                }
+            }
+        } else {
+            // Show Absent on the right side too
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(end = 4.dp)
+            ) {
                 Icon(
-                    imageVector = if (isLate) Icons.Default.Warning else Icons.Default.Check,
+                    imageVector = Icons.Default.Close,
                     contentDescription = null,
-                    tint = if (isLate) Color.Red else blue_green,
-                    modifier = Modifier.size(16.dp)
+                    modifier = Modifier.size(16.dp),
+                    tint = Color.Gray
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
-                    text = "${"%.1f".format(totalHours)} hrs",
+                    text = "Absent",
                     fontSize = 12.sp,
-                    fontWeight = FontWeight.Medium,
-                    color = MaterialTheme.colorScheme.onSurface
+                    fontWeight = FontWeight.SemiBold,
+                    color = Color.Gray
                 )
             }
 
-            if (isLate) {
-                Spacer(modifier = Modifier.height(2.dp))
-                Box(
-                    modifier = Modifier
-                        .background(Color.Red.copy(alpha = 0.2f), RoundedCornerShape(6.dp))
-                        .padding(horizontal = 6.dp, vertical = 2.dp)
-                ) {
-                    Text(
-                        text = "Late",
-                        fontSize = 10.sp,
-                        color = Color.Red,
-                        fontWeight = FontWeight.SemiBold
-                    )
-                }
-            }
         }
     }
 }
+
