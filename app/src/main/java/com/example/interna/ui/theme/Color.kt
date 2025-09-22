@@ -10,8 +10,8 @@ val Purple40 = Color(0xFF6650a4)
 val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
 
-
-
+val other_green = Color(0xFF4CAF50)
+val light_green = Color(0xFF23dC9F)
 val blue_green = Color(0xFF167A4E)
 val dark_grey = Color(0xFF142025)
 val calm_white = Color(0xFFDEF4F6)
@@ -25,6 +25,10 @@ val dark_white = Color(0xFFC6C8CA)
 val indigo = Color(0xFF5E35B1)
 
 val balloon_color = Color(0xFF212121)
+
+
+val gradient_start = Color(0xFF2254E2)
+val gradient_end = Color(0xFF5D0A9E)
 
 
 
