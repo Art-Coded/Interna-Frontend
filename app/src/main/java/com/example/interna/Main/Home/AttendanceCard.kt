@@ -50,9 +50,8 @@ fun AttendanceCard() {
                         colors = if (isDarkTheme) {
                             //dark mode
                             listOf(
-                                MaterialTheme.colorScheme.surface.copy(alpha = 0.6f), // start
-                                MaterialTheme.colorScheme.surface.copy(alpha = 0.5f),
-                                Color.Black.copy(alpha = 0.3f) // end
+                                Color.Black.copy(alpha = 0.3f),
+                                Color.Black.copy(alpha = 0.3f)
                             )
                         } else {
                             //light mode
