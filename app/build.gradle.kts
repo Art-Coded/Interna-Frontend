@@ -85,6 +85,8 @@ dependencies {
 
     implementation("com.github.skydoves:balloon-compose:1.6.13")
 
+    implementation("io.github.jisungbin:timelineview:1.0.2")
+
     implementation(libs.coil.compose) // preload images before navigation to save memory (improves performance from loading images)
 
     implementation(libs.hilt.android)                       //implementation("com.google.dagger:hilt-android:2.51")
