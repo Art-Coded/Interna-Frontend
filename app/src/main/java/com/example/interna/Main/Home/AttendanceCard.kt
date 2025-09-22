@@ -37,8 +37,10 @@ import com.example.interna.R
 @Composable
 fun AttendanceCard() {
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth(),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        shape = RoundedCornerShape(16.dp)
     ) {
         val isDarkTheme = isSystemInDarkTheme()
 
@@ -46,25 +48,14 @@ fun AttendanceCard() {
             modifier = Modifier
                 .fillMaxWidth()
                 .background(
-                    brush = Brush.horizontalGradient(
-                        colors = if (isDarkTheme) {
-                            //dark mode
-                            listOf(
-                                Color.Black.copy(alpha = 0.3f),
-                                Color.Black.copy(alpha = 0.3f)
-                            )
-                        } else {
-                            //light mode
-                            listOf(
-                                Color(0xFF4CAF50).copy(alpha = 0.3f), // start
-                                MaterialTheme.colorScheme.surface.copy(alpha = 0.6f) // end
-                            )
-                        }
-                    )
+                    if (isDarkTheme) {
+                        Color.Black.copy(alpha = 0.3f)
+                    } else {
+                        MaterialTheme.colorScheme.surface
+                    }
                 )
-                .padding(20.dp)
         ) {
-            Column {
+            Column(modifier = Modifier.padding(20.dp)) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,

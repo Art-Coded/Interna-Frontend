@@ -87,7 +87,7 @@ fun QuickActionsCard() {
                             modifier = Modifier.size(22.dp)
                         )
                         Spacer(modifier = Modifier.width(12.dp))
-                        Text("Request Absence", fontSize = 14.sp)
+                        Text("Request Absence", fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurface)
                     }
                 }
 
@@ -114,7 +114,7 @@ fun QuickActionsCard() {
                             modifier = Modifier.size(22.dp)
                         )
                         Spacer(modifier = Modifier.width(12.dp))
-                        Text("Request Time Correction", fontSize = 14.sp)
+                        Text("Request Time Correction", fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurface)
                     }
                 }
 
@@ -141,7 +141,7 @@ fun QuickActionsCard() {
                             modifier = Modifier.size(22.dp)
                         )
                         Spacer(modifier = Modifier.width(12.dp))
-                        Text("Request Offline Clock-In", fontSize = 14.sp)
+                        Text("Request Offline Clock-In", fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurface)
                     }
                 }
 
@@ -168,7 +168,7 @@ fun QuickActionsCard() {
                             modifier = Modifier.size(22.dp)
                         )
                         Spacer(modifier = Modifier.width(12.dp))
-                        Text("Request Leave", fontSize = 14.sp)
+                        Text("Request Leave", fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurface)
                     }
                 }
 
@@ -195,7 +195,7 @@ fun QuickActionsCard() {
                             modifier = Modifier.size(22.dp)
                         )
                         Spacer(modifier = Modifier.width(12.dp))
-                        Text("FAQs", fontSize = 14.sp)
+                        Text("FAQs", fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurface)
                     }
                 }
             }
