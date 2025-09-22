@@ -85,7 +85,7 @@ dependencies {
 
     implementation("com.github.skydoves:balloon-compose:1.6.13")
 
-    implementation("io.github.jisungbin:timelineview:1.0.2")
+    implementation("com.github.binayshaw7777:KotStep:3.0.1")
 
     implementation(libs.coil.compose) // preload images before navigation to save memory (improves performance from loading images)
 
