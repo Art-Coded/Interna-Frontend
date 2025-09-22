@@ -56,7 +56,7 @@ fun AttendanceCard() {
                         } else {
                             //light mode
                             listOf(
-                                Color(0xFF4CAF50).copy(alpha = 0.4f), // start
+                                Color(0xFF4CAF50).copy(alpha = 0.3f), // start
                                 MaterialTheme.colorScheme.surface.copy(alpha = 0.6f) // end
                             )
                         }
