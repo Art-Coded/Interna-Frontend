@@ -1,4 +1,4 @@
-package com.example.interna.Main.BottomNav
+package com.example.interna.ClientMain.BottomNav
 
 import BottomNavItem
 import androidx.compose.animation.AnimatedVisibility
@@ -20,11 +20,11 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.*
-import com.example.interna.Main.Companies.CompaniesScreen
-import com.example.interna.Main.Home.HomeScreen
-import com.example.interna.Main.Requirements.RequirementsScreen
-import com.example.interna.Main.Settings.SettingsScreen
-import com.example.interna.Main.WeeklyReport.WeeklyReportScreen
+import com.example.interna.ClientMain.Companies.CompaniesScreen
+import com.example.interna.ClientMain.Home.HomeScreen
+import com.example.interna.ClientMain.Requirements.RequirementsScreen
+import com.example.interna.ClientMain.Settings.SettingsScreen
+import com.example.interna.ClientMain.WeeklyReport.WeeklyReportScreen
 
 sealed class NavItem(val route: String, val label: String, val lottieIcon: String?) {
     object Home : NavItem("home", "Home", "home")

@@ -1,4 +1,4 @@
-package com.example.interna.Main.Requirements
+package com.example.interna.ClientMain.Companies
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,8 +8,8 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 
 @Composable
-fun RequirementsScreen(navController: NavController) {
+fun CompaniesScreen(navController: NavController) {
     Column(modifier = Modifier.fillMaxSize()) {
-        Text("Requirements")
+        Text("Companies")
     }
 }

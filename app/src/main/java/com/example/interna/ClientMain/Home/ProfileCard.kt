@@ -1,4 +1,4 @@
-package com.example.interna.Main.Home
+package com.example.interna.ClientMain.Home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

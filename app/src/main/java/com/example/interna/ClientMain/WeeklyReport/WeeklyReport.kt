@@ -1,4 +1,4 @@
-package com.example.interna.Main.WeeklyReport
+package com.example.interna.ClientMain.WeeklyReport
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize

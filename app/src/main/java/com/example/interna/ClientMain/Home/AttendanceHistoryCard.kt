@@ -1,7 +1,8 @@
-package com.example.interna.Main.Home
+package com.example.interna.ClientMain.Home
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -15,10 +16,14 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -60,12 +65,47 @@ fun AttendanceHistoryCard() {
                     .fillMaxWidth()
                     .padding(20.dp)
             ) {
-                Text(
-                    text = "Recent Attendance",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "Recent Attendance",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+
+                    val pressed = remember { mutableStateOf(false) }
+
+                    Text(
+                        text = "View All",
+                        fontSize = 12.sp,
+                        modifier = Modifier
+                            .graphicsLayer {
+                                alpha = if (pressed.value) 0.5f else 1f
+                            }
+                            .pointerInput(Unit) {
+                                detectTapGestures(
+                                    onPress = {
+                                        pressed.value = true
+                                        try {
+                                            awaitRelease()
+                                        } finally {
+                                            pressed.value = false
+                                        }
+                                    },
+                                    onTap = {
+                                        // handle click here
+                                    }
+                                )
+                            }
+                    )
+                }
+
+
 
                 Spacer(modifier = Modifier.height(16.dp))
 
