@@ -89,7 +89,6 @@ fun HomeScreen(navController: NavController) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(horizontal = 16.dp)
                     .verticalScroll(scrollState),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
@@ -98,6 +97,8 @@ fun HomeScreen(navController: NavController) {
                 AttendanceCard()
 
                 AttendanceHistoryCard()
+
+                ProgressBreakdownCard()
 
                 Spacer(modifier = Modifier.height(20.dp))
             }
