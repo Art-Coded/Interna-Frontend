@@ -51,6 +51,7 @@ import androidx.compose.ui.unit.sp
 import com.example.interna.R
 import com.example.interna.ui.theme.balloon_color
 import com.example.interna.ui.theme.blue_green
+import com.example.interna.ui.theme.gradient_start
 import com.example.interna.ui.theme.indigo
 import com.skydoves.balloon.BalloonAnimation
 import com.skydoves.balloon.compose.Balloon
@@ -254,7 +255,7 @@ fun LoginScreen(homeClick: () -> Unit) {
                     homeClick()// TODO: Navigate to Login
                 },
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = blue_green,
+                    containerColor = gradient_start,
                     contentColor = Color.White
                 ),
                 modifier = Modifier

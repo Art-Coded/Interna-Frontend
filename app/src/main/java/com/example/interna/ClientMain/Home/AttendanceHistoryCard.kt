@@ -270,13 +270,6 @@ fun TimelineRow(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.padding(end = 4.dp)
             ) {
-                Icon(
-                    imageVector = Icons.Default.Close,
-                    contentDescription = null,
-                    modifier = Modifier.size(16.dp),
-                    tint = Color.Gray
-                )
-                Spacer(modifier = Modifier.width(4.dp))
                 Text(
                     text = "Absent",
                     fontSize = 12.sp,

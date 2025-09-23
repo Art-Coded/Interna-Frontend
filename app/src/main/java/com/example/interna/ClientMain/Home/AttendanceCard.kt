@@ -53,6 +53,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.interna.R
+import com.example.interna.ui.theme.gradient_start
 import kotlinx.coroutines.launch
 
 @Composable
@@ -157,8 +158,8 @@ fun AttendanceCard() {
                             modifier = Modifier
                                 .padding(top = 8.dp)
                                 .clip(RoundedCornerShape(12.dp))
-                                .background(Color.Red) // fill background
-                                .border(0.3.dp, Color.Black, RoundedCornerShape(12.dp)) // outline
+                                .background(Color.Red.copy(0.9f))
+                                .border(0.2.dp, Color.Black, RoundedCornerShape(12.dp)) // outline
                                 .padding(horizontal = 14.dp, vertical = 5.dp) // inner padding
                         ) {
                             Text(
@@ -188,8 +189,8 @@ fun AttendanceCard() {
                             modifier = Modifier
                                 .padding(top = 8.dp)
                                 .clip(RoundedCornerShape(12.dp))
-                                .background(Color.Gray) // fill background
-                                .border(0.3.dp, Color.Black, RoundedCornerShape(12.dp)) // outline
+                                .background(Color.Gray.copy(0.9f)) // fill background
+                                .border(0.2.dp, Color.Black, RoundedCornerShape(12.dp)) // outline
                                 .padding(horizontal = 14.dp, vertical = 5.dp) // inner padding
                         ) {
                             Text(
@@ -212,7 +213,7 @@ fun AttendanceCard() {
                         onClick = { /* Clock in action */ },
                         modifier = Modifier.weight(1f),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFF4CAF50)
+                            containerColor = gradient_start
                         )
                     ) {
                         Icon(
