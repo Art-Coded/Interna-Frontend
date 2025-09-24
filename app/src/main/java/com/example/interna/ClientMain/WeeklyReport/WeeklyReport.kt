@@ -23,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
@@ -36,6 +37,22 @@ import com.example.interna.ui.theme.gradient_end
 import com.example.interna.ui.theme.gradient_start
 import kotlinx.coroutines.launch
 
+enum class WeekStatus {
+    SUBMITTED, DRAFT, PENDING, CURRENT
+}
+
+data class WeekData(
+    val id: Int,
+    val week: String,
+    val dateRange: String,
+    val status: WeekStatus,
+    val daysCompleted: Int,
+    val totalDays: Int,
+    val hoursLogged: Int,
+    val totalHours: Int,
+    val draftText: String = ""
+)
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WeeklyReportScreen(navController: NavController) {
@@ -45,6 +62,20 @@ fun WeeklyReportScreen(navController: NavController) {
     var reportText by remember { mutableStateOf("") }
     val currentWeek = SimpleDateFormat("'Week' w 'of' yyyy", Locale.getDefault()).format(Date())
     val dateRange = "September 16 - September 20, 2025"
+
+    var reportTexts by remember { mutableStateOf(mapOf<Int, String>()) }
+    var selectedWeekId by remember { mutableStateOf(6) }
+    var showWeekSelector by remember { mutableStateOf(false) }
+
+    val weekData = listOf(
+        WeekData(2, "Week 2", "August 19 - August 23, 2025", WeekStatus.PENDING, 5, 5, 40, 40),
+        WeekData(5, "Week 5", "September 9 - September 13, 2025", WeekStatus.PENDING, 5, 5, 40, 40),
+        WeekData(6, "Week 6", "September 16 - September 20, 2025", WeekStatus.PENDING, 4, 5, 32, 40),
+        WeekData(7, "Week 7", "September 23 - September 27, 2025", WeekStatus.PENDING, 3, 5, 24, 40)
+    )
+
+    val selectedWeek = weekData.find { it.id == selectedWeekId } ?: weekData[2]
+    val pendingWeeks = weekData.filter { it.status == WeekStatus.PENDING || it.status == WeekStatus.CURRENT }
 
     Box(modifier = Modifier.fillMaxSize()){
         Column(modifier = Modifier.fillMaxSize()) {
@@ -177,6 +208,125 @@ fun WeeklyReportScreen(navController: NavController) {
                                     fontSize = 10.sp,
                                     color = if (reportText.length > 1800) Color(0xFFFF5722) else Color(0xFF666666)
                                 )
+                            }
+
+                            Spacer(modifier = Modifier.height(12.dp))
+
+                            // Week Selector
+                            OutlinedButton(
+                                onClick = { showWeekSelector = !showWeekSelector },
+                                modifier = Modifier.fillMaxWidth(),
+                                colors = ButtonDefaults.outlinedButtonColors(
+                                    contentColor = Color(0xFF333333)
+                                )
+                            ) {
+                                Icon(
+                                    Icons.Default.DateRange,
+                                    contentDescription = "Select Week",
+                                    modifier = Modifier.size(16.dp),
+                                    tint = MaterialTheme.colorScheme.onSurface
+                                )
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text(
+                                    text = "${selectedWeek.week} - ${selectedWeek.dateRange}",
+                                    fontSize = 12.sp,
+                                    modifier = Modifier.weight(1f),
+                                    color = MaterialTheme.colorScheme.onSurface
+                                )
+                                Image(
+                                    painter = painterResource(
+                                        id = if (showWeekSelector) R.drawable.ic_arrow_up
+                                        else R.drawable.ic_arrow_down
+                                    ),
+                                    contentDescription = if (showWeekSelector) "Collapse" else "Expand",
+                                    modifier = Modifier.size(20.dp),
+                                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onBackground)
+                                )
+                            }
+
+                            if (showWeekSelector) {
+                                Spacer(modifier = Modifier.height(8.dp))
+                                Card(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+                                ) {
+                                    Box(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .background(
+                                                if (isDarkTheme) {
+                                                    Color.Black.copy(alpha = 0.6f)
+                                                } else {
+                                                    MaterialTheme.colorScheme.surface
+                                                }
+                                            )
+                                    ) {
+                                        Column(
+                                            modifier = Modifier.padding(8.dp)
+                                        ) {
+                                            Text(
+                                                text = "Select week to write report:",
+                                                fontSize = 10.sp,
+                                                modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                                            )
+
+                                            pendingWeeks.forEach { week ->
+                                                Surface(
+                                                    onClick = {
+                                                        selectedWeekId = week.id
+                                                        showWeekSelector = false
+                                                    },
+                                                    modifier = Modifier.fillMaxWidth(),
+                                                    color = if (selectedWeekId == week.id) Color(0xFF4CAF50).copy(alpha = 0.1f) else Color.Transparent
+                                                ) {
+                                                    Row(
+                                                        modifier = Modifier
+                                                            .fillMaxWidth()
+                                                            .padding(12.dp),
+                                                        horizontalArrangement = Arrangement.SpaceBetween,
+                                                        verticalAlignment = Alignment.CenterVertically
+                                                    ) {
+                                                        Column {
+                                                            Text(
+                                                                text = week.week,
+                                                                fontSize = 12.sp,
+                                                                fontWeight = FontWeight.Medium,
+                                                                color = if (selectedWeekId == week.id) gradient_start else MaterialTheme.colorScheme.onSurface
+                                                            )
+                                                            Text(
+                                                                text = week.dateRange,
+                                                                fontSize = 10.sp
+                                                            )
+                                                        }
+
+                                                        Row(
+                                                            horizontalArrangement = Arrangement.spacedBy(4.dp)
+                                                        ) {
+
+                                                            if (reportTexts[week.id]?.isNotEmpty() == true) {
+                                                                AssistChip(
+                                                                    onClick = { },
+                                                                    label = { Text("Draft", fontSize = 8.sp) },
+                                                                    colors = AssistChipDefaults.assistChipColors(
+                                                                        containerColor = Color(0xFFFF9800).copy(alpha = 0.2f)
+                                                                    )
+                                                                )
+                                                            } else if (week.status == WeekStatus.PENDING) {
+                                                                AssistChip(
+                                                                    onClick = { },
+                                                                    label = { Text("Missing", fontSize = 8.sp) },
+                                                                    colors = AssistChipDefaults.assistChipColors(
+                                                                        containerColor = Color(0xFFFF5722).copy(alpha = 0.2f)
+                                                                    )
+                                                                )
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
                             }
 
                             Spacer(modifier = Modifier.height(12.dp))
@@ -498,7 +648,7 @@ fun PreviousReportItem(
         ) {
             Text(
                 text = week,
-                fontSize = 16.sp,
+                fontSize = 14.sp,
                 fontWeight = FontWeight.Medium
             )
             Text(
