@@ -60,8 +60,6 @@ fun WeeklyReportScreen(navController: NavController) {
 
     val scrollState = rememberScrollState()
     var reportText by remember { mutableStateOf("") }
-    val currentWeek = SimpleDateFormat("'Week' w 'of' yyyy", Locale.getDefault()).format(Date())
-    val dateRange = "September 16 - September 20, 2025"
 
     var reportTexts by remember { mutableStateOf(mapOf<Int, String>()) }
     var selectedWeekId by remember { mutableStateOf(6) }
@@ -124,24 +122,12 @@ fun WeeklyReportScreen(navController: NavController) {
                                 horizontalArrangement = Arrangement.SpaceBetween,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Column {
-                                    Text(
-                                        text = "Current Week",
-                                        fontSize = 12.sp,
-                                        color = Color.White
-                                    )
-                                    Text(
-                                        text = currentWeek,
-                                        fontSize = 18.sp,
-                                        fontWeight = FontWeight.SemiBold,
-                                        color = Color.White
-                                    )
-                                    Text(
-                                        text = dateRange,
-                                        fontSize = 12.sp,
-                                        color = Color.White
-                                    )
-                                }
+                                Text(
+                                    text = "Weekly Report Progress Summary",
+                                    fontSize = 18.sp,
+                                    fontWeight = FontWeight.SemiBold,
+                                    color = Color.White
+                                )
                             }
 
                             Spacer(modifier = Modifier.height(16.dp))
@@ -152,21 +138,21 @@ fun WeeklyReportScreen(navController: NavController) {
                                 horizontalArrangement = Arrangement.spacedBy(12.dp)
                             ) {
                                 WeekStatusItem(
-                                    label = "Days Completed",
-                                    value = "4/5",
+                                    label = "Entries in Total",
+                                    value = "20",
                                     color = Color.White,
                                     modifier = Modifier.weight(1f)
                                 )
                                 WeekStatusItem(
-                                    label = "Hours Logged",
-                                    value = "32/40",
+                                    label = "Entries Pending",
+                                    value = "14",
                                     color = Color.White,
                                     modifier = Modifier.weight(1f)
                                 )
                                 WeekStatusItem(
-                                    label = "Report Status",
-                                    value = if (reportText.isNotEmpty()) "Draft" else "Pending",
-                                    color = if (reportText.isNotEmpty()) Color.White else Color.White,
+                                    label = "Entries Logged",
+                                    value = "6/20",
+                                    color = Color.White,
                                     modifier = Modifier.weight(1f)
                                 )
                             }
@@ -262,11 +248,11 @@ fun WeeklyReportScreen(navController: NavController) {
                                             )
                                     ) {
                                         Column(
-                                            modifier = Modifier.padding(8.dp)
+                                            modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)
                                         ) {
                                             Text(
                                                 text = "Select week to write report:",
-                                                fontSize = 10.sp,
+                                                fontSize = 14.sp,
                                                 modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                                             )
 
@@ -348,7 +334,7 @@ fun WeeklyReportScreen(navController: NavController) {
                                     .height(280.dp),
                                 placeholder = {
                                     Text(
-                                        text = "Start writing your weekly report here...\n\nSuggested topics to cover:\n• Main tasks and activities completed\n• New skills learned or improved\n• Challenges faced and how you overcame them\n• Achievements and accomplishments\n• Areas for improvement\n• Plans for next week",
+                                        text = "Start writing your ${selectedWeek.week} report here...\n\nSuggested topics to cover:\n• Main tasks and activities completed\n• New skills learned or improved\n• Challenges faced and how you overcame them\n• Achievements and accomplishments\n• Areas for improvement\n• Plans for next week",
                                         fontSize = 12.sp,
                                         color = Color(0xFFBBBBBB)
                                     )
@@ -372,7 +358,7 @@ fun WeeklyReportScreen(navController: NavController) {
                                     enabled = reportText.isNotEmpty()
                                 ) {
                                     Icon(
-                                        painter = painterResource(R.drawable.ic_tutorial),
+                                        painter = painterResource(R.drawable.ic_save),
                                         contentDescription = "Save Draft",
                                         modifier = Modifier.size(16.dp)
                                     )
@@ -408,7 +394,7 @@ fun WeeklyReportScreen(navController: NavController) {
                             }
 
                             //weekly report guidelines part
-                            Box(modifier = Modifier.padding(16.dp).background(Color(0xFF2196F3).copy(alpha = 0.1f)))
+                            Box(modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom =16.dp).background(Color(0xFF2196F3).copy(alpha = 0.1f)))
                             Column{
                                 Row(
                                     verticalAlignment = Alignment.CenterVertically
@@ -564,7 +550,7 @@ fun WeeklyReportScreen(navController: NavController) {
                         Spacer(modifier = Modifier.height(8.dp))
 
                         Text(
-                            text = "• Submit your report by Friday 5:00 PM\n• Save drafts regularly to avoid losing your work\n• Review your report before final submission\n• Contact your supervisor if you need help",
+                            text = "• Submit your report on schedule for your OJT supervisor to properly monitor you and your safety\n• Save drafts regularly to avoid losing your work\n• Review your report before final submission\n• Contact your supervisor if you need help",
                             fontSize = 12.sp,
                             color = Color(0xFFFF9800).copy(alpha = 0.8f)
                         )
@@ -595,13 +581,13 @@ fun WeekStatusItem(
     ) {
         Text(
             text = value,
-            fontSize = 14.sp,
+            fontSize = 16.sp,
             fontWeight = FontWeight.Bold,
             color = color
         )
         Text(
             text = label,
-            fontSize = 8.sp,
+            fontSize = 10.sp,
             color = color
         )
     }
