@@ -283,24 +283,19 @@ fun WeeklyReportScreen(navController: NavController) {
                                     verticalArrangement = Arrangement.spacedBy(2.dp)
                                 ) {
                                     GuidelineItem(
-                                        text = "Write in detail about your daily activities and tasks",
-                                        color = gradient_start
+                                        text = "Write in detail about your daily activities and tasks"
                                     )
                                     GuidelineItem(
-                                        text = "Include specific examples of what you learned",
-                                        color = gradient_start
+                                        text = "Include specific examples of what you learned"
                                     )
                                     GuidelineItem(
-                                        text = "Mention any challenges and how you addressed them",
-                                        color = gradient_start
+                                        text = "Mention any challenges and how you addressed them"
                                     )
                                     GuidelineItem(
-                                        text = "Be honest and reflective about your experience",
-                                        color = gradient_start
+                                        text = "Be honest and reflective about your experience"
                                     )
                                     GuidelineItem(
-                                        text = "(Optional) Use professional language and proper grammar",
-                                        color = gradient_start
+                                        text = "(Optional) Use professional language and proper grammar"
                                     )
                                 }
                             }
@@ -367,23 +362,23 @@ fun WeeklyReportScreen(navController: NavController) {
                             Spacer(modifier = Modifier.height(16.dp))
 
                             Column(
-                                verticalArrangement = Arrangement.spacedBy(12.dp)
+                                verticalArrangement = Arrangement.spacedBy(6.dp)
                             ) {
                                 PreviousReportItem(
                                     week = "Week 5",
-                                    dateRange = "Sep 9 - Sep 13, 2025",
+                                    submittedOn = "Submitted on: Sep 13, 2025",
                                     statusColor = Color(0xFF4CAF50)
                                 )
 
                                 PreviousReportItem(
                                     week = "Week 4",
-                                    dateRange = "Sep 2 - Sep 6, 2025",
+                                    submittedOn = "Submitted on: Sep 6, 2025",
                                     statusColor = Color(0xFF4CAF50)
                                 )
 
                                 PreviousReportItem(
                                     week = "Week 3",
-                                    dateRange = "Aug 26 - Aug 30, 2025",
+                                    submittedOn = "Submitted on: Aug 30, 2025",
                                     statusColor = Color(0xFF4CAF50)
                                 )
                             }
@@ -394,7 +389,6 @@ fun WeeklyReportScreen(navController: NavController) {
                 // Submission Tips Card
                 Card(
                     modifier = Modifier.fillMaxWidth(),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
                     colors = CardDefaults.cardColors(
                         containerColor = Color(0xFFFF9800).copy(alpha = 0.1f)
                     )
@@ -402,9 +396,7 @@ fun WeeklyReportScreen(navController: NavController) {
                     Column(
                         modifier = Modifier.padding(16.dp)
                     ) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
+                        Row{
                             Icon(
                                 painter = painterResource(R.drawable.ic_tutorial),
                                 contentDescription = "Tips",
@@ -418,17 +410,18 @@ fun WeeklyReportScreen(navController: NavController) {
                                 fontWeight = FontWeight.Medium,
                                 color = Color(0xFFFF9800)
                             )
-
-                            Spacer(modifier = Modifier.height(8.dp))
-
-                            Text(
-                                text = "• Submit your report by Friday 5:00 PM\n• Save drafts regularly to avoid losing your work\n• Review your report before final submission\n• Contact your supervisor if you need help",
-                                fontSize = 12.sp,
-                                color = Color(0xFFFF9800).copy(alpha = 0.8f)
-                            )
                         }
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        Text(
+                            text = "• Submit your report by Friday 5:00 PM\n• Save drafts regularly to avoid losing your work\n• Review your report before final submission\n• Contact your supervisor if you need help",
+                            fontSize = 12.sp,
+                            color = Color(0xFFFF9800).copy(alpha = 0.8f)
+                        )
                     }
                 }
+
+                Spacer(modifier = Modifier.height(20.dp))
             }
         }
     }
@@ -466,22 +459,19 @@ fun WeekStatusItem(
 
 @Composable
 fun GuidelineItem(
-    text: String,
-    color: Color
+    text: String
 ) {
     Row(
         verticalAlignment = Alignment.Top
     ) {
         Text(
             text = "•",
-            color = color,
             fontSize = 12.sp,
             modifier = Modifier.padding(end = 8.dp)
         )
         Text(
             text = text,
-            fontSize = 12.sp,
-            color = color.copy(alpha = 0.8f)
+            fontSize = 12.sp
         )
     }
 }
@@ -489,7 +479,7 @@ fun GuidelineItem(
 @Composable
 fun PreviousReportItem(
     week: String,
-    dateRange: String,
+    submittedOn: String,
     statusColor: Color
 ) {
     Row(
@@ -512,7 +502,7 @@ fun PreviousReportItem(
                 fontWeight = FontWeight.Medium
             )
             Text(
-                text = dateRange,
+                text = submittedOn,
                 fontSize = 12.sp,
                 color = Color(0xFF666666)
             )
