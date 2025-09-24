@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -22,6 +23,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -310,56 +313,80 @@ fun WeeklyReportScreen(navController: NavController) {
                     modifier = Modifier.fillMaxWidth(),
                     elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
                 ) {
-                    Column(
-                        modifier = Modifier.padding(16.dp)
-                    ) {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(
-                                text = "Previous Reports",
-                                fontSize = 16.sp,
-                                fontWeight = FontWeight.SemiBold
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(
+                                if (isDarkTheme) {
+                                    Color.Black.copy(alpha = 0.3f)
+                                } else {
+                                    MaterialTheme.colorScheme.surface
+                                }
                             )
-                            TextButton(onClick = { /* View all reports */ }) {
+                    ) {
+                        Column(
+                            modifier = Modifier.padding(16.dp)
+                        ) {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
                                 Text(
-                                    "View All",
-                                    color = Color(0xFF4CAF50),
-                                    fontSize = 12.sp
+                                    text = "Previous Submitted Reports",
+                                    fontSize = 16.sp,
+                                    fontWeight = FontWeight.SemiBold
+                                )
+                                val pressed = remember { mutableStateOf(false) }
+
+                                Text(
+                                    text = "View All",
+                                    fontSize = 12.sp,
+                                    modifier = Modifier
+                                        .graphicsLayer {
+                                            alpha = if (pressed.value) 0.5f else 1f
+                                        }
+                                        .pointerInput(Unit) {
+                                            detectTapGestures(
+                                                onPress = {
+                                                    pressed.value = true
+                                                    try {
+                                                        awaitRelease()
+                                                    } finally {
+                                                        pressed.value = false
+                                                    }
+                                                },
+                                                onTap = {
+                                                    // handle click here
+                                                }
+                                            )
+                                        }
                                 )
                             }
-                        }
 
-                        Spacer(modifier = Modifier.height(16.dp))
+                            Spacer(modifier = Modifier.height(16.dp))
 
-                        Column(
-                            verticalArrangement = Arrangement.spacedBy(12.dp)
-                        ) {
-                            PreviousReportItem(
-                                week = "Week 5",
-                                dateRange = "Sep 9 - Sep 13, 2025",
-                                status = "Submitted",
-                                feedback = "Good progress on database tasks",
-                                statusColor = Color(0xFF4CAF50)
-                            )
+                            Column(
+                                verticalArrangement = Arrangement.spacedBy(12.dp)
+                            ) {
+                                PreviousReportItem(
+                                    week = "Week 5",
+                                    dateRange = "Sep 9 - Sep 13, 2025",
+                                    statusColor = Color(0xFF4CAF50)
+                                )
 
-                            PreviousReportItem(
-                                week = "Week 4",
-                                dateRange = "Sep 2 - Sep 6, 2025",
-                                status = "Submitted",
-                                feedback = "Excellent work on UI components",
-                                statusColor = Color(0xFF4CAF50)
-                            )
+                                PreviousReportItem(
+                                    week = "Week 4",
+                                    dateRange = "Sep 2 - Sep 6, 2025",
+                                    statusColor = Color(0xFF4CAF50)
+                                )
 
-                            PreviousReportItem(
-                                week = "Week 3",
-                                dateRange = "Aug 26 - Aug 30, 2025",
-                                status = "Submitted",
-                                feedback = "Need more detail on learning outcomes",
-                                statusColor = Color(0xFF4CAF50)
-                            )
+                                PreviousReportItem(
+                                    week = "Week 3",
+                                    dateRange = "Aug 26 - Aug 30, 2025",
+                                    statusColor = Color(0xFF4CAF50)
+                                )
+                            }
                         }
                     }
                 }
@@ -463,8 +490,6 @@ fun GuidelineItem(
 fun PreviousReportItem(
     week: String,
     dateRange: String,
-    status: String,
-    feedback: String,
     statusColor: Color
 ) {
     Row(
@@ -483,54 +508,35 @@ fun PreviousReportItem(
         ) {
             Text(
                 text = week,
-                fontSize = 14.sp,
+                fontSize = 16.sp,
                 fontWeight = FontWeight.Medium
             )
             Text(
                 text = dateRange,
-                fontSize = 10.sp,
+                fontSize = 12.sp,
                 color = Color(0xFF666666)
             )
-            if (feedback.isNotEmpty()) {
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = "Feedback: $feedback",
-                    fontSize = 10.sp,
-                    color = Color(0xFF666666),
-                    style = androidx.compose.ui.text.TextStyle(
-                        fontStyle = androidx.compose.ui.text.font.FontStyle.Italic
-                    )
-                )
-            }
         }
 
         Column(
             horizontalAlignment = Alignment.End
         ) {
-            AssistChip(
-                onClick = { },
-                label = {
-                    Text(
-                        status,
-                        fontSize = 10.sp
-                    )
+            val scope = rememberCoroutineScope()
+            IconButton(
+                onClick = {
+                    scope.launch {
+
+                    }
                 },
-                colors = AssistChipDefaults.assistChipColors(
-                    containerColor = statusColor.copy(alpha = 0.2f),
-                    labelColor = statusColor
-                )
-            )
-
-            Spacer(modifier = Modifier.height(4.dp))
-
-            OutlinedButton(
-                onClick = { /* View report */ },
-                modifier = Modifier.height(24.dp),
-                contentPadding = PaddingValues(horizontal = 8.dp)
+                modifier = Modifier
+                    .size(40.dp)
+                    .clip(CircleShape)
             ) {
-                Text(
-                    "View",
-                    fontSize = 10.sp
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_view),
+                    contentDescription = "Menu Icon",
+                    tint = MaterialTheme.colorScheme.onBackground,
+                    modifier = Modifier.height(24.dp) // size of the icon inside
                 )
             }
         }
