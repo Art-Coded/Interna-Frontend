@@ -253,64 +253,54 @@ fun WeeklyReportScreen(navController: NavController) {
                                     color = Color(0xFFFF9800)
                                 )
                             }
-                        }
-                    }
-                }
 
-                // Report Guidelines Card
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-                    colors = CardDefaults.cardColors(
-                        containerColor = Color(0xFF2196F3).copy(alpha = 0.1f)
-                    )
-                ) {
-                    Column(
-                        modifier = Modifier.padding(16.dp)
-                    ) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Icon(
-                                Icons.Default.Info,
-                                contentDescription = "Guidelines",
-                                tint = Color(0xFF2196F3),
-                                modifier = Modifier.size(20.dp)
-                            )
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text(
-                                text = "Report Writing Guidelines",
-                                fontSize = 14.sp,
-                                fontWeight = FontWeight.Medium,
-                                color = Color(0xFF2196F3)
-                            )
-                        }
+                            //weekly report guidelines part
+                            Box(modifier = Modifier.padding(16.dp).background(Color(0xFF2196F3).copy(alpha = 0.1f)))
+                            Column{
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Icon(
+                                        Icons.Default.Info,
+                                        contentDescription = "Guidelines",
+                                        tint = gradient_start,
+                                        modifier = Modifier.size(20.dp)
+                                    )
+                                    Spacer(modifier = Modifier.width(8.dp))
+                                    Text(
+                                        text = "Report Writing Guidelines",
+                                        fontSize = 14.sp,
+                                        fontWeight = FontWeight.Medium
+                                    )
+                                }
 
-                        Spacer(modifier = Modifier.height(12.dp))
+                                Spacer(modifier = Modifier.height(4.dp))
 
-                        Column(
-                            verticalArrangement = Arrangement.spacedBy(8.dp)
-                        ) {
-                            GuidelineItem(
-                                text = "Write in detail about your daily activities and tasks",
-                                color = Color(0xFF2196F3)
-                            )
-                            GuidelineItem(
-                                text = "Include specific examples of what you learned",
-                                color = Color(0xFF2196F3)
-                            )
-                            GuidelineItem(
-                                text = "Mention any challenges and how you addressed them",
-                                color = Color(0xFF2196F3)
-                            )
-                            GuidelineItem(
-                                text = "Be honest and reflective about your experience",
-                                color = Color(0xFF2196F3)
-                            )
-                            GuidelineItem(
-                                text = "Use professional language and proper grammar",
-                                color = Color(0xFF2196F3)
-                            )
+                                Column(
+                                    verticalArrangement = Arrangement.spacedBy(2.dp)
+                                ) {
+                                    GuidelineItem(
+                                        text = "Write in detail about your daily activities and tasks",
+                                        color = gradient_start
+                                    )
+                                    GuidelineItem(
+                                        text = "Include specific examples of what you learned",
+                                        color = gradient_start
+                                    )
+                                    GuidelineItem(
+                                        text = "Mention any challenges and how you addressed them",
+                                        color = gradient_start
+                                    )
+                                    GuidelineItem(
+                                        text = "Be honest and reflective about your experience",
+                                        color = gradient_start
+                                    )
+                                    GuidelineItem(
+                                        text = "(Optional) Use professional language and proper grammar",
+                                        color = gradient_start
+                                    )
+                                }
+                            }
                         }
                     }
                 }
