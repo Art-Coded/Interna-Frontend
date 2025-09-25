@@ -27,6 +27,7 @@ import com.example.interna.ui.theme.gradient_start
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RequirementsScreen(navController: NavController) {
+    val isDarkTheme = isSystemInDarkTheme()
 
     val scrollState = rememberScrollState()
 
@@ -150,128 +151,71 @@ fun RequirementsScreen(navController: NavController) {
                         title = "Daily Time Record",
                         description = "Weekly timesheet documentation",
                         status = RequirementStatus.PENDING_UPLOAD,
-                        borderColor = Color(0xFFF44336)
+                        borderColor = Color.LightGray
                     )
 
                     RequirementCard(
                         title = "Training Agreement",
                         description = "Signed agreement between school and company",
                         status = RequirementStatus.PENDING_UPLOAD,
-                        borderColor = Color(0xFFF44336)
+                        borderColor = Color.LightGray
                     )
 
                     RequirementCard(
                         title = "Final Portfolio",
                         description = "Complete portfolio of OJT experience and learnings",
-                        status = RequirementStatus.PENDING_UPLOAD,
-                        borderColor = Color(0xFFF44336)
+                        status = RequirementStatus.WARNING,
+                        borderColor = Color.Red
                     )
-                }
-
-                // Quick Actions Card
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
-                ) {
-                    Column(
-                        modifier = Modifier.padding(16.dp)
-                    ) {
-                        Text(
-                            text = "Quick Actions",
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.SemiBold
-                        )
-
-                        Spacer(modifier = Modifier.height(16.dp))
-
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(12.dp)
-                        ) {
-                            OutlinedButton(
-                                onClick = { /* Upload document */ },
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .height(80.dp)
-                            ) {
-                                Column(
-                                    horizontalAlignment = Alignment.CenterHorizontally
-                                ) {
-                                    Icon(
-                                        painter = painterResource(R.drawable.ic_filter),
-                                        contentDescription = "Upload Document",
-                                        tint = Color(0xFF2196F3),
-                                        modifier = Modifier.size(24.dp)
-                                    )
-                                    Spacer(modifier = Modifier.height(4.dp))
-                                    Text(
-                                        "Upload Document",
-                                        fontSize = 12.sp
-                                    )
-                                }
-                            }
-
-                            OutlinedButton(
-                                onClick = { /* Download all */ },
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .height(80.dp)
-                            ) {
-                                Column(
-                                    horizontalAlignment = Alignment.CenterHorizontally
-                                ) {
-                                    Icon(
-                                        painter = painterResource(R.drawable.ic_filter),
-                                        contentDescription = "Download All",
-                                        tint = Color(0xFF4CAF50),
-                                        modifier = Modifier.size(24.dp)
-                                    )
-                                    Spacer(modifier = Modifier.height(4.dp))
-                                    Text(
-                                        "Download All",
-                                        fontSize = 12.sp
-                                    )
-                                }
-                            }
-                        }
-                    }
                 }
 
                 // Help Section
                 Card(
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Column(
-                        modifier = Modifier.padding(16.dp)
-                    ) {
-                        Text(
-                            text = "Need Help?",
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.Medium,
-                            color = Color(0xFF2196F3)
-                        )
-
-                        Spacer(modifier = Modifier.height(8.dp))
-
-                        Text(
-                            text = "If you're having trouble with document submission or approval status, contact your OJT coordinator.",
-                            fontSize = 12.sp,
-                            lineHeight = 16.sp
-                        )
-
-                        Spacer(modifier = Modifier.height(12.dp))
-
-                        OutlinedButton(
-                            modifier = Modifier.fillMaxWidth(),
-                            onClick = { /* Contact support */ },
-                            colors = ButtonDefaults.outlinedButtonColors(
-                                contentColor = Color(0xFF2196F3)
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(
+                                if (isDarkTheme) {
+                                    Color.Black.copy(alpha = 0.3f)
+                                } else {
+                                    MaterialTheme.colorScheme.surface
+                                }
                             )
+                    ) {
+                        Column(
+                            modifier = Modifier.padding(16.dp)
                         ) {
                             Text(
-                                "Contact Support",
-                                fontSize = 12.sp
+                                text = "Need Help?",
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.Medium,
+                                color = Color(0xFF2196F3)
                             )
+
+                            Spacer(modifier = Modifier.height(8.dp))
+
+                            Text(
+                                text = "If you're having trouble with document submission or approval status, contact your OJT coordinator.",
+                                fontSize = 12.sp,
+                                lineHeight = 16.sp
+                            )
+
+                            Spacer(modifier = Modifier.height(12.dp))
+
+                            OutlinedButton(
+                                modifier = Modifier.fillMaxWidth(),
+                                onClick = { /* Contact support */ },
+                                colors = ButtonDefaults.outlinedButtonColors(
+                                    contentColor = Color(0xFF2196F3)
+                                )
+                            ) {
+                                Text(
+                                    "Contact Support",
+                                    fontSize = 12.sp
+                                )
+                            }
                         }
                     }
                 }
@@ -285,8 +229,7 @@ fun RequirementsScreen(navController: NavController) {
 enum class RequirementStatus {
     APPROVED,
     PENDING_UPLOAD,
-    OVERDUE,
-    NOT_STARTED
+    WARNING
 }
 
 @Composable
@@ -350,9 +293,8 @@ fun RequirementCard(
                         Icon(
                             when(status) {
                                 RequirementStatus.APPROVED -> Icons.Default.CheckCircle
-                                RequirementStatus.PENDING_UPLOAD -> Icons.Default.Warning
-                                RequirementStatus.OVERDUE -> Icons.Default.Warning
-                                RequirementStatus.NOT_STARTED -> Icons.Default.AddCircle
+                                RequirementStatus.PENDING_UPLOAD -> Icons.Default.Edit
+                                RequirementStatus.WARNING -> Icons.Default.Warning
                             },
                             contentDescription = status.name,
                             tint = borderColor,
@@ -381,7 +323,6 @@ fun RequirementCard(
                 }
 
                 Column(
-                    modifier = Modifier.fillMaxHeight(), // or fillMaxSize()
                     horizontalAlignment = Alignment.End,
                     verticalArrangement = Arrangement.Center
                 ) {
@@ -407,6 +348,18 @@ fun RequirementCard(
                                     painter = painterResource(R.drawable.ic_download),
                                     contentDescription = "Download",
                                     modifier = Modifier.size(18.dp)
+                                )
+                            }
+
+                            IconButton(
+                                onClick = { /* Delete document */ },
+                                modifier = Modifier.size(32.dp)
+                            ) {
+                                Icon(
+                                    painter = painterResource(R.drawable.ic_delete),
+                                    contentDescription = "Download",
+                                    modifier = Modifier.size(18.dp),
+                                    tint = Color.Red
                                 )
                             }
                         } else {
