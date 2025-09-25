@@ -21,6 +21,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import android.content.Intent
 import android.net.Uri
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.border
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavController
 import com.example.interna.R
@@ -41,10 +48,12 @@ data class Company(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CompaniesScreen(navController: NavController) {
+    val isDarkTheme = isSystemInDarkTheme()
+
     val context = LocalContext.current
-    var searchQuery by remember { mutableStateOf("") }
-    var selectedCourse by remember { mutableStateOf("All Courses") }
-    var isDropdownExpanded by remember { mutableStateOf(false) }
+    var searchQuery by rememberSaveable { mutableStateOf("") }
+    var selectedCourse by rememberSaveable { mutableStateOf("All Courses") }
+    var isDropdownExpanded by rememberSaveable { mutableStateOf(false) }
 
     val courses = listOf(
         "All Courses",
@@ -186,109 +195,203 @@ fun CompaniesScreen(navController: NavController) {
                 item{
                     Card(
                         modifier = Modifier.fillMaxWidth(),
-                        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-                        colors = CardDefaults.cardColors(containerColor = Color.White)
+                        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
                     ) {
-                        Column(
-                            modifier = Modifier.padding(16.dp),
-                            verticalArrangement = Arrangement.spacedBy(12.dp)
+
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(
+                                    if (isDarkTheme) {
+                                        Color.Black.copy(alpha = 0.3f)
+                                    } else {
+                                        MaterialTheme.colorScheme.surface
+                                    }
+                                )
                         ) {
-                            // Search Bar
-                            OutlinedTextField(
-                                value = searchQuery,
-                                onValueChange = { searchQuery = it },
-                                placeholder = { Text("Search companies, coordinators, or industries...") },
-                                leadingIcon = {
-                                    Icon(Icons.Default.Search, contentDescription = "Search")
-                                },
-                                modifier = Modifier.fillMaxWidth(),
-                                colors = OutlinedTextFieldDefaults.colors(
-                                    focusedContainerColor = Color(0xFFF8F9FA),
-                                    unfocusedContainerColor = Color(0xFFF8F9FA)
-                                )
-                            )
-
-                            // Course Filter
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                modifier = Modifier.fillMaxWidth()
+                            Column(
+                                modifier = Modifier.padding(16.dp),
+                                verticalArrangement = Arrangement.spacedBy(12.dp)
                             ) {
-                                Icon(
-                                    painter = painterResource(R.drawable.ic_filter),
-                                    contentDescription = "Filter",
-                                    tint = Color(0xFF666666),
-                                    modifier = Modifier.size(20.dp)
-                                )
-                                Spacer(modifier = Modifier.width(8.dp))
 
-                                ExposedDropdownMenuBox(
-                                    expanded = isDropdownExpanded,
-                                    onExpandedChange = { isDropdownExpanded = !isDropdownExpanded },
-                                    modifier = Modifier.weight(1f)
-                                ) {
-                                    OutlinedTextField(
-                                        value = selectedCourse,
-                                        onValueChange = { },
-                                        readOnly = true,
-                                        placeholder = { Text("Filter by course") },
-                                        trailingIcon = {
-                                            ExposedDropdownMenuDefaults.TrailingIcon(expanded = isDropdownExpanded)
-                                        },
-                                        modifier = Modifier
-                                            .menuAnchor()
-                                            .fillMaxWidth(),
-                                        colors = OutlinedTextFieldDefaults.colors(
-                                            focusedContainerColor = Color(0xFFF8F9FA),
-                                            unfocusedContainerColor = Color(0xFFF8F9FA)
+                                BasicTextField(
+                                    value = searchQuery,
+                                    onValueChange = { searchQuery = it },
+                                    singleLine = true,
+                                    textStyle = LocalTextStyle.current.copy(
+                                        color = MaterialTheme.colorScheme.onSurface,
+                                        fontSize = 14.sp
+                                    ),
+                                    cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(40.dp)
+                                        .background(
+                                            if (isDarkTheme) {
+                                                Color.Black.copy(alpha = 0.3f)
+                                            } else {
+                                                MaterialTheme.colorScheme.surface
+                                            },
+                                            MaterialTheme.shapes.small
                                         )
-                                    )
-
-                                    ExposedDropdownMenu(
-                                        expanded = isDropdownExpanded,
-                                        onDismissRequest = { isDropdownExpanded = false }
-                                    ) {
-                                        courses.forEach { course ->
-                                            DropdownMenuItem(
-                                                text = { Text(course) },
-                                                onClick = {
-                                                    selectedCourse = course
-                                                    isDropdownExpanded = false
-                                                }
+                                        .clip(MaterialTheme.shapes.small)
+                                        .border(
+                                            width = 1.dp,
+                                            color = MaterialTheme.colorScheme.outline,
+                                            shape = MaterialTheme.shapes.small
+                                        )
+                                        .padding(horizontal = 8.dp, vertical = 8.dp), // slim padding
+                                    decorationBox = { innerTextField ->
+                                        Row(
+                                            Modifier.fillMaxWidth(),
+                                            verticalAlignment = Alignment.CenterVertically
+                                        ) {
+                                            // Leading search icon
+                                            Icon(
+                                                imageVector = Icons.Default.Search,
+                                                contentDescription = "Search",
+                                                tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
+                                                modifier = Modifier.padding(end = 6.dp)
                                             )
+
+                                            Box(Modifier.weight(1f)) {
+                                                if (searchQuery.isEmpty()) {
+                                                    Text(
+                                                        text = "Search companies...",
+                                                        style = LocalTextStyle.current.copy(
+                                                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f),
+                                                            fontSize = 14.sp
+                                                        )
+                                                    )
+                                                }
+                                                innerTextField()
+                                            }
+                                        }
+                                    }
+                                )
+
+
+
+                                // Course Filter
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    modifier = Modifier.fillMaxWidth()
+                                ) {
+                                    Icon(
+                                        painter = painterResource(R.drawable.ic_filter),
+                                        contentDescription = "Filter",
+                                        modifier = Modifier.size(20.dp)
+                                    )
+                                    Spacer(modifier = Modifier.width(8.dp))
+
+                                    ExposedDropdownMenuBox(
+                                        expanded = isDropdownExpanded,
+                                        onExpandedChange = { isDropdownExpanded = !isDropdownExpanded },
+                                        modifier = Modifier.weight(1f)
+                                    ) {
+
+                                        BasicTextField(
+                                            value = selectedCourse,
+                                            onValueChange = { }, // keep it readOnly
+                                            readOnly = true,
+                                            singleLine = true,
+                                            textStyle = LocalTextStyle.current.copy(
+                                                color = MaterialTheme.colorScheme.onSurface,
+                                                fontSize = 14.sp
+                                            ),
+                                            cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
+                                            modifier = Modifier
+                                                .menuAnchor() // still works for dropdown menu
+                                                .fillMaxWidth()
+                                                .height(40.dp)
+                                                .background(
+                                                    if (isDarkTheme) {
+                                                        Color.Black.copy(alpha = 0.3f)
+                                                    } else {
+                                                        MaterialTheme.colorScheme.surface
+                                                    },
+                                                    MaterialTheme.shapes.small
+                                                )
+                                                .clip(MaterialTheme.shapes.small)
+                                                .border(
+                                                    width = 1.dp,
+                                                    color = MaterialTheme.colorScheme.outline,
+                                                    shape = MaterialTheme.shapes.small
+                                                )
+                                                .padding(horizontal = 8.dp, vertical = 8.dp), // slim padding
+                                            decorationBox = { innerTextField ->
+                                                Row(
+                                                    Modifier.fillMaxWidth(),
+                                                    verticalAlignment = Alignment.CenterVertically
+                                                ) {
+                                                    Box(Modifier.weight(1f)) {
+                                                        if (selectedCourse.isEmpty()) {
+                                                            Text(
+                                                                text = "Filter by course",
+                                                                style = LocalTextStyle.current.copy(
+                                                                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f),
+                                                                    fontSize = 14.sp
+                                                                )
+                                                            )
+                                                        }
+                                                        innerTextField()
+                                                    }
+
+                                                    // Dropdown trailing icon
+                                                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = isDropdownExpanded)
+                                                }
+                                            }
+                                        )
+
+
+
+                                        ExposedDropdownMenu(
+                                            expanded = isDropdownExpanded,
+                                            onDismissRequest = { isDropdownExpanded = false }
+                                        ) {
+                                            courses.forEach { course ->
+                                                DropdownMenuItem(
+                                                    text = { Text(course) },
+                                                    onClick = {
+                                                        selectedCourse = course
+                                                        isDropdownExpanded = false
+                                                    }
+                                                )
+                                            }
                                         }
                                     }
                                 }
-                            }
 
-                            // Results Count
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Text(
-                                    text = "${filteredCompanies.size} companies found",
-                                    fontSize = 12.sp,
-                                    color = Color(0xFF666666)
-                                )
-
-                                if (selectedCourse != "All Courses") {
-                                    AssistChip(
-                                        onClick = { },
-                                        label = {
-                                            Text(
-                                                selectedCourse,
-                                                fontSize = 10.sp
-                                            )
-                                        },
-                                        colors = AssistChipDefaults.assistChipColors(
-                                            containerColor = Color(0xFF2196F3).copy(alpha = 0.1f),
-                                            labelColor = Color(0xFF2196F3)
-                                        )
+                                // Results Count
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Text(
+                                        text = "${filteredCompanies.size} companies found",
+                                        fontSize = 12.sp
                                     )
+
+                                    if (selectedCourse != "All Courses") {
+                                        AssistChip(
+                                            onClick = { },
+                                            label = {
+                                                Text(
+                                                    selectedCourse,
+                                                    fontSize = 10.sp
+                                                )
+                                            },
+                                            colors = AssistChipDefaults.assistChipColors(
+                                                containerColor = Color(0xFF2196F3).copy(alpha = 0.1f),
+                                                labelColor = Color(0xFF2196F3)
+                                            )
+                                        )
+                                    }
                                 }
                             }
                         }
+
                     }
                 }
 
@@ -296,40 +399,51 @@ fun CompaniesScreen(navController: NavController) {
                     item {
                         Card(
                             modifier = Modifier.fillMaxWidth(),
-                            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-                            colors = CardDefaults.cardColors(containerColor = Color.White)
+                            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
                         ) {
-                            Column(
+                            Box(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .padding(32.dp),
-                                horizontalAlignment = Alignment.CenterHorizontally
+                                    .background(
+                                        if (isDarkTheme) {
+                                            Color.Black.copy(alpha = 0.3f)
+                                        } else {
+                                            MaterialTheme.colorScheme.surface
+                                        }
+                                    )
                             ) {
-                                Icon(
-                                    painter = painterResource(R.drawable.ic_info),
-                                    contentDescription = "No companies",
-                                    tint = Color(0xFFCCCCCC),
-                                    modifier = Modifier.size(48.dp)
-                                )
-                                Spacer(modifier = Modifier.height(16.dp))
-                                Text(
-                                    text = "No companies found",
-                                    fontSize = 16.sp,
-                                    fontWeight = FontWeight.Medium
-                                )
-                                Text(
-                                    text = "Try adjusting your search or filter criteria",
-                                    fontSize = 12.sp,
-                                    color = Color(0xFF666666)
-                                )
-                                Spacer(modifier = Modifier.height(16.dp))
-                                OutlinedButton(
-                                    onClick = {
-                                        searchQuery = ""
-                                        selectedCourse = "All Courses"
-                                    }
+                                Column(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(32.dp),
+                                    horizontalAlignment = Alignment.CenterHorizontally
                                 ) {
-                                    Text("Clear Filters")
+                                    Icon(
+                                        painter = painterResource(R.drawable.ic_info),
+                                        contentDescription = "No companies",
+                                        tint = Color(0xFFCCCCCC),
+                                        modifier = Modifier.size(48.dp)
+                                    )
+                                    Spacer(modifier = Modifier.height(16.dp))
+                                    Text(
+                                        text = "No companies found",
+                                        fontSize = 16.sp,
+                                        fontWeight = FontWeight.Medium
+                                    )
+                                    Text(
+                                        text = "Try adjusting your search or filter criteria",
+                                        fontSize = 12.sp,
+                                        color = Color(0xFF666666)
+                                    )
+                                    Spacer(modifier = Modifier.height(16.dp))
+                                    OutlinedButton(
+                                        onClick = {
+                                            searchQuery = ""
+                                            selectedCourse = "All Courses"
+                                        }
+                                    ) {
+                                        Text("Clear Filters")
+                                    }
                                 }
                             }
                         }
@@ -352,11 +466,13 @@ fun CompaniesScreen(navController: NavController) {
 fun CompanyCard(
     company: Company
 ) {
+    val isDarkTheme = isSystemInDarkTheme()
+
     Card(
         modifier = Modifier.fillMaxWidth(),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White)
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
+
         Column(
             modifier = Modifier.padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
@@ -435,31 +551,12 @@ fun CompanyCard(
                     }
                 }
 
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    AssistChip(
-                        onClick = { },
-                        label = {
-                            Text(
-                                "${company.slots} slots",
-                                fontSize = 10.sp
-                            )
-                        },
-                        colors = AssistChipDefaults.assistChipColors(
-                            containerColor = Color(0xFF4CAF50).copy(alpha = 0.1f),
-                            labelColor = Color(0xFF4CAF50)
-                        )
-                    )
-
-                    Icon(
-                        Icons.Default.Warning,
-                        contentDescription = "Warning",
-                        tint = Color(0xFFFF9800),
-                        modifier = Modifier.size(16.dp)
-                    )
-                }
+                Icon(
+                    Icons.Default.Warning,
+                    contentDescription = "Warning",
+                    tint = Color.Red.copy(0.8f),
+                    modifier = Modifier.size(16.dp)
+                )
             }
 
             // Coordinator Information
@@ -469,72 +566,86 @@ fun CompanyCard(
                     containerColor = Color(0xFFF8F9FA)
                 )
             ) {
-                Column(
-                    modifier = Modifier.padding(12.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(
+                            if (isDarkTheme) {
+                                Color.Black.copy(alpha = 0.3f)
+                            } else {
+                                MaterialTheme.colorScheme.surface
+                            }
+                        )
                 ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(
-                            Icons.Default.Person,
-                            contentDescription = "Coordinator",
-                            tint = Color(0xFF666666),
-                            modifier = Modifier.size(16.dp)
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(
-                            text = "Coordinator",
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.Medium,
-                            color = Color(0xFF333333)
-                        )
-                    }
-
-                    Text(
-                        text = company.coordinator,
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.Medium
-                    )
-
                     Column(
-                        verticalArrangement = Arrangement.spacedBy(4.dp)
+                        modifier = Modifier.padding(12.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         Row(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Icon(
-                                Icons.Default.Phone,
-                                contentDescription = "Phone",
+                                Icons.Default.Person,
+                                contentDescription = "Coordinator",
                                 tint = Color(0xFF666666),
-                                modifier = Modifier.size(12.dp)
+                                modifier = Modifier.size(16.dp)
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
-                                text = company.phone,
+                                text = "Coordinator",
                                 fontSize = 12.sp,
-                                color = Color(0xFF666666)
+                                fontWeight = FontWeight.Medium,
+                                color = Color(0xFF333333)
                             )
                         }
 
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically
+                        Text(
+                            text = company.coordinator,
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Medium
+                        )
+
+                        Column(
+                            verticalArrangement = Arrangement.spacedBy(4.dp)
                         ) {
-                            Icon(
-                                Icons.Default.Email,
-                                contentDescription = "Email",
-                                tint = Color(0xFF666666),
-                                modifier = Modifier.size(12.dp)
-                            )
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text(
-                                text = company.email,
-                                fontSize = 12.sp,
-                                color = Color(0xFF666666)
-                            )
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Icon(
+                                    Icons.Default.Phone,
+                                    contentDescription = "Phone",
+                                    tint = Color(0xFF666666),
+                                    modifier = Modifier.size(12.dp)
+                                )
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text(
+                                    text = company.phone,
+                                    fontSize = 12.sp,
+                                    color = Color(0xFF666666)
+                                )
+                            }
+
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Icon(
+                                    Icons.Default.Email,
+                                    contentDescription = "Email",
+                                    tint = Color(0xFF666666),
+                                    modifier = Modifier.size(12.dp)
+                                )
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text(
+                                    text = company.email,
+                                    fontSize = 12.sp,
+                                    color = Color(0xFF666666)
+                                )
+                            }
                         }
                     }
                 }
+
+
             }
 
 
