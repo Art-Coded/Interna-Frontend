@@ -152,7 +152,7 @@ fun PreviousReportsCard() {
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = "• Submit your report on schedule for your OJT supervisor to properly monitor you and your safety\n• Save drafts regularly to avoid losing your work\n• Review your report before final submission\n• Contact your supervisor if you need help",
+                text = "• Submit your report on schedule for your OJT supervisor to properly monitor you and your safety.\n• Save drafts regularly to avoid losing your work.\n• Review your report before final submission.\n• Contact your supervisor if you need help.",
                 fontSize = 12.sp,
                 color = Color(0xFFFF9800).copy(alpha = 0.8f)
             )

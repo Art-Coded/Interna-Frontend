@@ -339,7 +339,8 @@ fun ReportWritingCard() {
 
                     Column{
                         Text(
-                            text = "• Write in detail about your daily activities and tasks\n• Include specific examples of what you learned\n• Mention any challenges and how you addressed them\n• Be honest and reflective about youre experience\n• (Optional) Use professional language and proper grammar"
+                            text = "• Write in detail about your daily activities and tasks.\n• Include specific examples of what you learned.\n• Mention any challenges and how you addressed them.\n• Be honest and reflective about youre experience.\n• (Optional) Use professional language and proper grammar.",
+                            fontSize = 11.sp
                         )
                     }
                 }
