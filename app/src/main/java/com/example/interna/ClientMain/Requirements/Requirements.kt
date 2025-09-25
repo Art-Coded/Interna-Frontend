@@ -127,44 +127,57 @@ fun RequirementsScreen(navController: NavController) {
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     RequirementCard(
-                        title = "Resume/CV",
-                        description = "Personal resume and curriculum vitae",
-                        status = RequirementStatus.APPROVED,
+                        requirement = Requirement(
+                            title = "Resume/CV",
+                            description = "Personal resume and curriculum vitae",
+                            status = RequirementStatus.APPROVED
+                        ),
                         borderColor = Color(0xFF4CAF50)
                     )
 
                     RequirementCard(
-                        title = "Endorsement Letter",
-                        description = "Official letter from academic department",
-                        status = RequirementStatus.APPROVED,
+                        requirement = Requirement(
+                            title = "Endorsement Letter",
+                            description = "Official letter from academic department",
+                            status = RequirementStatus.APPROVED
+                        ),
                         borderColor = Color(0xFF4CAF50)
                     )
 
                     RequirementCard(
-                        title = "Medical Certificate",
-                        description = "Health clearance for on-site training",
-                        status = RequirementStatus.APPROVED,
+                        requirement = Requirement(
+                            title = "Medical Certificate",
+                            description = "Health clearance for on-site training",
+                            status = RequirementStatus.APPROVED
+                        ),
                         borderColor = Color(0xFF4CAF50)
                     )
 
                     RequirementCard(
-                        title = "Daily Time Record",
-                        description = "Weekly timesheet documentation",
-                        status = RequirementStatus.PENDING_UPLOAD,
+                        requirement = Requirement(
+                            title = "Daily Time Record",
+                            description = "Weekly timesheet documentation",
+                            status = RequirementStatus.PENDING_UPLOAD
+                        ),
                         borderColor = Color.LightGray
                     )
 
                     RequirementCard(
-                        title = "Training Agreement",
-                        description = "Signed agreement between school and company",
-                        status = RequirementStatus.PENDING_UPLOAD,
+                        requirement = Requirement(
+                            title = "Training Agreement",
+                            description = "Signed agreement between school and company",
+                            status = RequirementStatus.PENDING_UPLOAD
+                        ),
                         borderColor = Color.LightGray
                     )
 
                     RequirementCard(
-                        title = "Final Portfolio",
-                        description = "Complete portfolio of OJT experience and learnings",
-                        status = RequirementStatus.WARNING,
+                        requirement = Requirement(
+                            title = "Company MOA",
+                            description = "Memorandum of Agreement document.",
+                            status = RequirementStatus.WARNING,
+                            warningReason = "This is not the correct document upload."
+                        ),
                         borderColor = Color.Red
                     )
                 }
@@ -232,11 +245,16 @@ enum class RequirementStatus {
     WARNING
 }
 
+data class Requirement(
+    val title: String,
+    val description: String,
+    val status: RequirementStatus,
+    val warningReason: String? = null // ✅ only used when status = WARNING
+)
+
 @Composable
 fun RequirementCard(
-    title: String,
-    description: String,
-    status: RequirementStatus,
+    requirement: Requirement,
     borderColor: Color
 ) {
     val isDarkTheme = isSystemInDarkTheme()
@@ -259,16 +277,8 @@ fun RequirementCard(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(
-                        Color.Transparent,
-                        shape = RoundedCornerShape(8.dp)
-                    )
-                    .padding(
-                        start = 4.dp,
-                        top = 16.dp,
-                        end = 16.dp,
-                        bottom = 16.dp
-                    ),
+                    .background(Color.Transparent, shape = RoundedCornerShape(8.dp))
+                    .padding(start = 4.dp, top = 16.dp, end = 16.dp, bottom = 16.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 // Status indicator bar
@@ -276,33 +286,26 @@ fun RequirementCard(
                     modifier = Modifier
                         .width(4.dp)
                         .height(60.dp)
-                        .background(
-                            borderColor,
-                            shape = RoundedCornerShape(2.dp)
-                        )
+                        .background(borderColor, shape = RoundedCornerShape(2.dp))
                 )
 
                 Spacer(modifier = Modifier.width(12.dp))
 
-                Column(
-                    modifier = Modifier.weight(1f)
-                ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
+                Column(modifier = Modifier.weight(1f)) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(
-                            when(status) {
+                            when (requirement.status) {
                                 RequirementStatus.APPROVED -> Icons.Default.CheckCircle
                                 RequirementStatus.PENDING_UPLOAD -> Icons.Default.Edit
                                 RequirementStatus.WARNING -> Icons.Default.Warning
                             },
-                            contentDescription = status.name,
+                            contentDescription = requirement.status.name,
                             tint = borderColor,
                             modifier = Modifier.size(20.dp)
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            text = title,
+                            text = requirement.title,
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Medium,
                             lineHeight = 16.sp
@@ -312,14 +315,22 @@ fun RequirementCard(
                     Spacer(modifier = Modifier.height(4.dp))
 
                     Text(
-                        text = description,
+                        text = requirement.description,
                         fontSize = 12.sp,
                         lineHeight = 16.sp,
                         modifier = Modifier.padding(end = 4.dp)
                     )
 
-                    Spacer(modifier = Modifier.height(8.dp))
-
+                    if (requirement.status == RequirementStatus.WARNING && requirement.warningReason != null) {
+                        Spacer(modifier = Modifier.height(6.dp))
+                        Text(
+                            text = "Removed by Admin: ${requirement.warningReason}",
+                            fontSize = 11.sp,
+                            fontWeight = FontWeight.SemiBold,
+                            color = Color.Red,
+                            lineHeight = 14.sp
+                        )
+                    }
                 }
 
                 Column(
@@ -329,7 +340,7 @@ fun RequirementCard(
                     Row(
                         horizontalArrangement = Arrangement.spacedBy(4.dp)
                     ) {
-                        if (status == RequirementStatus.APPROVED) {
+                        if (requirement.status == RequirementStatus.APPROVED) {
                             IconButton(
                                 onClick = { /* View document */ },
                                 modifier = Modifier.size(32.dp)
