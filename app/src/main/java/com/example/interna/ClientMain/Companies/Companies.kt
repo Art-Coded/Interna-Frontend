@@ -179,7 +179,7 @@ fun CompaniesScreen(navController: NavController) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 14.dp, end = 14.dp, top = 4.dp, bottom = 12.dp)
+                    .padding(start = 14.dp, end = 14.dp, top = 4.dp, bottom = 15.5.dp)
             ) {
                 Text(
                     text = "Partnered Companies",
