@@ -48,10 +48,11 @@ fun CompaniesScreen(navController: NavController) {
 
     val context = LocalContext.current
     var searchQuery by rememberSaveable { mutableStateOf("") }
-    var selectedCourse by rememberSaveable { mutableStateOf("All Courses") }
+    var selectedCourse by rememberSaveable { mutableStateOf("All Departments") }
     var isDropdownExpanded by rememberSaveable { mutableStateOf(false) }
 
     val departments = listOf(
+        "All Departments",
         "College of Engineering and Architecture",
         "College of Education",
         "College of Management",
@@ -168,7 +169,7 @@ fun CompaniesScreen(navController: NavController) {
                 company.coordinator.contains(searchQuery, ignoreCase = true) ||
                 company.industry.contains(searchQuery, ignoreCase = true)
 
-        val matchesCourse = selectedCourse == "All Courses" || company.department == selectedCourse
+        val matchesCourse = selectedCourse == "All Departments" || company.department == selectedCourse
 
         matchesSearch && matchesCourse
     }
@@ -327,7 +328,7 @@ fun CompaniesScreen(navController: NavController) {
                                                     Box(Modifier.weight(1f)) {
                                                         if (selectedCourse.isEmpty()) {
                                                             Text(
-                                                                text = "Filter by course",
+                                                                text = "Filter by Department",
                                                                 style = LocalTextStyle.current.copy(
                                                                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f),
                                                                     fontSize = 14.sp
@@ -438,7 +439,7 @@ fun CompaniesScreen(navController: NavController) {
                                     OutlinedButton(
                                         onClick = {
                                             searchQuery = ""
-                                            selectedCourse = "All Courses"
+                                            selectedCourse = "All Departments"
                                         }
                                     ) {
                                         Text("Clear Filters")
