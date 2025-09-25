@@ -2,6 +2,7 @@ package com.example.interna.ClientMain.Requirements
 
 import android.widget.ProgressBar
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -127,8 +128,6 @@ fun RequirementsScreen(navController: NavController) {
                     RequirementCard(
                         title = "Resume/CV",
                         description = "Personal resume and curriculum vitae",
-                        submissionDate = "Submitted: Jun 30, 2025",
-                        approvalStatus = "Approved by supervisor",
                         status = RequirementStatus.APPROVED,
                         borderColor = Color(0xFF4CAF50)
                     )
@@ -136,8 +135,6 @@ fun RequirementsScreen(navController: NavController) {
                     RequirementCard(
                         title = "Endorsement Letter",
                         description = "Official letter from academic department",
-                        submissionDate = "Submitted: Jun 30, 2025",
-                        approvalStatus = "Approved by supervisor",
                         status = RequirementStatus.APPROVED,
                         borderColor = Color(0xFF4CAF50)
                     )
@@ -145,8 +142,6 @@ fun RequirementsScreen(navController: NavController) {
                     RequirementCard(
                         title = "Medical Certificate",
                         description = "Health clearance for on-site training",
-                        submissionDate = "Submitted: Jul 5, 2025",
-                        approvalStatus = "Approved by HR",
                         status = RequirementStatus.APPROVED,
                         borderColor = Color(0xFF4CAF50)
                     )
@@ -154,28 +149,22 @@ fun RequirementsScreen(navController: NavController) {
                     RequirementCard(
                         title = "Daily Time Record",
                         description = "Weekly timesheet documentation",
-                        submissionDate = "Due: Weekly submission required",
-                        approvalStatus = null,
                         status = RequirementStatus.PENDING_UPLOAD,
-                        borderColor = Color(0xFFFF9800)
+                        borderColor = Color(0xFFF44336)
                     )
 
                     RequirementCard(
                         title = "Training Agreement",
                         description = "Signed agreement between school and company",
-                        submissionDate = "Overdue - Due: Sep 15, 2025",
-                        approvalStatus = null,
-                        status = RequirementStatus.OVERDUE,
+                        status = RequirementStatus.PENDING_UPLOAD,
                         borderColor = Color(0xFFF44336)
                     )
 
                     RequirementCard(
                         title = "Final Portfolio",
                         description = "Complete portfolio of OJT experience and learnings",
-                        submissionDate = "Due: Nov 30, 2025",
-                        approvalStatus = null,
-                        status = RequirementStatus.NOT_STARTED,
-                        borderColor = Color(0xFF9E9E9E)
+                        status = RequirementStatus.PENDING_UPLOAD,
+                        borderColor = Color(0xFFF44336)
                     )
                 }
 
@@ -250,11 +239,7 @@ fun RequirementsScreen(navController: NavController) {
 
                 // Help Section
                 Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-                    colors = CardDefaults.cardColors(
-                        containerColor = Color(0xFF2196F3).copy(alpha = 0.1f)
-                    )
+                    modifier = Modifier.fillMaxWidth()
                 ) {
                     Column(
                         modifier = Modifier.padding(16.dp)
@@ -271,12 +256,13 @@ fun RequirementsScreen(navController: NavController) {
                         Text(
                             text = "If you're having trouble with document submission or approval status, contact your OJT coordinator.",
                             fontSize = 12.sp,
-                            color = Color(0xFF2196F3).copy(alpha = 0.8f)
+                            lineHeight = 16.sp
                         )
 
                         Spacer(modifier = Modifier.height(12.dp))
 
                         OutlinedButton(
+                            modifier = Modifier.fillMaxWidth(),
                             onClick = { /* Contact support */ },
                             colors = ButtonDefaults.outlinedButtonColors(
                                 contentColor = Color(0xFF2196F3)
@@ -289,6 +275,8 @@ fun RequirementsScreen(navController: NavController) {
                         }
                     }
                 }
+
+                Spacer(modifier = Modifier.height(20.dp))
             }
         }
     }
@@ -305,183 +293,143 @@ enum class RequirementStatus {
 fun RequirementCard(
     title: String,
     description: String,
-    submissionDate: String,
-    approvalStatus: String?,
     status: RequirementStatus,
     borderColor: Color
 ) {
+    val isDarkTheme = isSystemInDarkTheme()
+
     Card(
         modifier = Modifier.fillMaxWidth(),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White)
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
-        Row(
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(
-                    Color.Transparent,
-                    shape = RoundedCornerShape(8.dp)
-                )
-                .padding(
-                    start = 4.dp,
-                    top = 16.dp,
-                    end = 16.dp,
-                    bottom = 16.dp
-                )
-        ) {
-            // Status indicator bar
-            Box(
-                modifier = Modifier
-                    .width(4.dp)
-                    .height(60.dp)
-                    .background(
-                        borderColor,
-                        shape = RoundedCornerShape(2.dp)
-                    )
-            )
-
-            Spacer(modifier = Modifier.width(12.dp))
-
-            Column(
-                modifier = Modifier.weight(1f)
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        when(status) {
-                            RequirementStatus.APPROVED -> Icons.Default.CheckCircle
-                            RequirementStatus.PENDING_UPLOAD -> Icons.Default.Warning
-                            RequirementStatus.OVERDUE -> Icons.Default.Warning
-                            RequirementStatus.NOT_STARTED -> Icons.Default.AddCircle
-                        },
-                        contentDescription = status.name,
-                        tint = borderColor,
-                        modifier = Modifier.size(20.dp)
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = title,
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.Medium
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(4.dp))
-
-                Text(
-                    text = description,
-                    fontSize = 12.sp,
-                    color = Color(0xFF666666)
-                )
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                Text(
-                    text = submissionDate,
-                    fontSize = 10.sp,
-                    color = when(status) {
-                        RequirementStatus.APPROVED -> Color(0xFF666666)
-                        RequirementStatus.OVERDUE -> Color(0xFFF44336)
-                        else -> borderColor
+                    if (isDarkTheme) {
+                        Color.Black.copy(alpha = 0.3f)
+                    } else {
+                        MaterialTheme.colorScheme.surface
                     }
                 )
-
-                if (approvalStatus != null) {
-                    Text(
-                        text = approvalStatus,
-                        fontSize = 10.sp,
-                        color = Color(0xFF666666)
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(
+                        Color.Transparent,
+                        shape = RoundedCornerShape(8.dp)
                     )
-                }
-            }
-
-            Column(
-                horizontalAlignment = Alignment.End
+                    .padding(
+                        start = 4.dp,
+                        top = 16.dp,
+                        end = 16.dp,
+                        bottom = 16.dp
+                    ),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                AssistChip(
-                    onClick = { },
-                    label = {
-                        Text(
-                            when(status) {
-                                RequirementStatus.APPROVED -> "Approved"
-                                RequirementStatus.PENDING_UPLOAD -> "Pending Upload"
-                                RequirementStatus.OVERDUE -> "Overdue"
-                                RequirementStatus.NOT_STARTED -> "Not Started"
-                            },
-                            fontSize = 10.sp
+                // Status indicator bar
+                Box(
+                    modifier = Modifier
+                        .width(4.dp)
+                        .height(60.dp)
+                        .background(
+                            borderColor,
+                            shape = RoundedCornerShape(2.dp)
                         )
-                    },
-                    colors = AssistChipDefaults.assistChipColors(
-                        containerColor = borderColor.copy(alpha = 0.2f),
-                        labelColor = borderColor
-                    )
                 )
 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.width(12.dp))
 
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                Column(
+                    modifier = Modifier.weight(1f)
                 ) {
-                    if (status == RequirementStatus.APPROVED) {
-                        IconButton(
-                            onClick = { /* View document */ },
-                            modifier = Modifier.size(32.dp)
-                        ) {
-                            Icon(
-                                painter = painterResource(R.drawable.ic_filter),
-                                contentDescription = "View",
-                                modifier = Modifier.size(16.dp)
-                            )
-                        }
-                        IconButton(
-                            onClick = { /* Download document */ },
-                            modifier = Modifier.size(32.dp)
-                        ) {
-                            Icon(
-                                painter = painterResource(R.drawable.ic_filter),
-                                contentDescription = "Download",
-                                modifier = Modifier.size(16.dp)
-                            )
-                        }
-                    } else if (status != RequirementStatus.NOT_STARTED) {
-                        Button(
-                            onClick = { /* Upload action */ },
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = when(status) {
-                                    RequirementStatus.OVERDUE -> Color(0xFFF44336)
-                                    else -> Color(0xFFFF9800)
-                                }
-                            ),
-                            modifier = Modifier.height(32.dp)
-                        ) {
-                            Icon(
-                                painter = painterResource(R.drawable.ic_filter),
-                                contentDescription = "Upload",
-                                modifier = Modifier.size(12.dp)
-                            )
-                            Spacer(modifier = Modifier.width(4.dp))
-                            Text(
-                                if (status == RequirementStatus.OVERDUE) "Upload Now" else "Upload",
-                                fontSize = 10.sp
-                            )
-                        }
-                    } else {
-                        OutlinedButton(
-                            onClick = { /* Upload action */ },
-                            enabled = false,
-                            modifier = Modifier.height(32.dp)
-                        ) {
-                            Icon(
-                                painter = painterResource(R.drawable.ic_filter),
-                                contentDescription = "Upload",
-                                modifier = Modifier.size(12.dp)
-                            )
-                            Spacer(modifier = Modifier.width(4.dp))
-                            Text(
-                                "Upload",
-                                fontSize = 10.sp
-                            )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            when(status) {
+                                RequirementStatus.APPROVED -> Icons.Default.CheckCircle
+                                RequirementStatus.PENDING_UPLOAD -> Icons.Default.Warning
+                                RequirementStatus.OVERDUE -> Icons.Default.Warning
+                                RequirementStatus.NOT_STARTED -> Icons.Default.AddCircle
+                            },
+                            contentDescription = status.name,
+                            tint = borderColor,
+                            modifier = Modifier.size(20.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = title,
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Medium,
+                            lineHeight = 16.sp
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(4.dp))
+
+                    Text(
+                        text = description,
+                        fontSize = 12.sp,
+                        lineHeight = 16.sp,
+                        modifier = Modifier.padding(end = 4.dp)
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                }
+
+                Column(
+                    modifier = Modifier.fillMaxHeight(), // or fillMaxSize()
+                    horizontalAlignment = Alignment.End,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(4.dp)
+                    ) {
+                        if (status == RequirementStatus.APPROVED) {
+                            IconButton(
+                                onClick = { /* View document */ },
+                                modifier = Modifier.size(32.dp)
+                            ) {
+                                Icon(
+                                    painter = painterResource(R.drawable.ic_view),
+                                    contentDescription = "View",
+                                    modifier = Modifier.size(18.dp)
+                                )
+                            }
+                            IconButton(
+                                onClick = { /* Download document */ },
+                                modifier = Modifier.size(32.dp)
+                            ) {
+                                Icon(
+                                    painter = painterResource(R.drawable.ic_download),
+                                    contentDescription = "Download",
+                                    modifier = Modifier.size(18.dp)
+                                )
+                            }
+                        } else {
+                            Button(
+                                onClick = { /* Upload action */ },
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = gradient_start
+                                ),
+                                modifier = Modifier.height(36.dp)
+                            ) {
+                                Icon(
+                                    painter = painterResource(R.drawable.ic_upload),
+                                    contentDescription = "Upload",
+                                    tint = Color.White,
+                                    modifier = Modifier.size(12.dp)
+                                )
+                                Spacer(modifier = Modifier.width(4.dp))
+                                Text(
+                                    text = "Upload",
+                                    fontSize = 11.sp,
+                                    color = Color.White
+                                )
+                            }
                         }
                     }
                 }
