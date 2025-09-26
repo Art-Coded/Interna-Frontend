@@ -30,10 +30,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.interna.R
 
 @Composable
 fun SettingsScreen(navController: NavController) {
@@ -47,28 +49,28 @@ fun SettingsScreen(navController: NavController) {
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     EnhancedSettingsItem(
-                        icon = Icons.Default.Notifications,
+                        iconRes = R.drawable.ic_notification,
                         title = "Notification Settings",
                         description = "Manage your app notifications",
                         onClick = { /* Navigate to notifications */ }
                     )
 
                     EnhancedSettingsItem(
-                        icon = Icons.Default.Lock,
+                        iconRes = R.drawable.ic_password,
                         title = "Change Password",
                         description = "Update your account password",
                         onClick = { /* Navigate to change password */ }
                     )
 
                     EnhancedSettingsItem(
-                        icon = Icons.Default.,
+                        iconRes = R.drawable.ic_mail,
                         title = "Contact Support",
                         description = "Get help with your account",
                         onClick = { /* Contact support */ }
                     )
 
                     EnhancedSettingsItem(
-                        icon = Icons.Default.Email,
+                        iconRes = R.drawable.ic_mail,
                         title = "Contact Support",
                         description = "Get help with your account",
                         onClick = { /* Contact support */ }
@@ -117,7 +119,7 @@ fun SettingsScreen(navController: NavController) {
 
 @Composable
 fun EnhancedSettingsItem(
-    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    iconRes: Int, // ✅ accepts R.drawable
     title: String,
     description: String,
     onClick: () -> Unit
@@ -134,12 +136,14 @@ fun EnhancedSettingsItem(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
-                icon,
+                painter = painterResource(id = iconRes), // ✅ load drawable
                 contentDescription = title,
                 modifier = Modifier.size(20.dp),
-                tint = Color(0xFF64748B)
+                tint = Color(0xFF64748B) // keep tint if your drawable is a vector, remove for bitmap
             )
+
             Spacer(modifier = Modifier.width(12.dp))
+
             Column(
                 modifier = Modifier.weight(1f)
             ) {
