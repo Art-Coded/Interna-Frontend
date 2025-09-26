@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.filled.Email
@@ -23,6 +25,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.SegmentedButtonDefaults.Icon
 import androidx.compose.material3.Text
@@ -39,41 +42,65 @@ import com.example.interna.R
 
 @Composable
 fun SettingsScreen(navController: NavController) {
+    val scrollState = rememberScrollState()
+
     Box(modifier = Modifier.fillMaxSize()){
         Column(modifier = Modifier.fillMaxSize()) {
 
             Column(
-                modifier = Modifier.padding(12.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 14.dp, end = 14.dp, top = 4.dp, bottom = 12.dp)
+            ) {
+                Text(
+                    text = "Settings",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 24.sp,
+                )
+            }
+
+            Column(
+                modifier = Modifier
+                    .padding(start = 12.dp, end = 12.dp, top = 2.dp)
+                    .verticalScroll(scrollState)
             ) {
                 Column(
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     EnhancedSettingsItem(
+                        iconRes = R.drawable.ic_account,
+                        title = "Account Settings",
+                        onClick = { /* Navigate to account settings */ }
+                    )
+
+                    EnhancedSettingsItem(
                         iconRes = R.drawable.ic_notification,
                         title = "Notification Settings",
-                        description = "Manage your app notifications",
                         onClick = { /* Navigate to notifications */ }
+                    )
+
+                    EnhancedSettingsItem(
+                        iconRes = R.drawable.ic_display,
+                        title = "Display",
+                        onClick = { /* Navigate to display */ }
                     )
 
                     EnhancedSettingsItem(
                         iconRes = R.drawable.ic_password,
                         title = "Change Password",
-                        description = "Update your account password",
                         onClick = { /* Navigate to change password */ }
                     )
 
                     EnhancedSettingsItem(
                         iconRes = R.drawable.ic_mail,
-                        title = "Contact Support",
-                        description = "Get help with your account",
+                        title = "Report a bug",
                         onClick = { /* Contact support */ }
                     )
 
                     EnhancedSettingsItem(
-                        iconRes = R.drawable.ic_mail,
-                        title = "Contact Support",
-                        description = "Get help with your account",
-                        onClick = { /* Contact support */ }
+                        iconRes = R.drawable.ic_info,
+                        title = "Terms and Policies",
+                        onClick = { /* Terms and Policies */ }
                     )
 
                     Spacer(modifier = Modifier.height(20.dp))
@@ -90,10 +117,11 @@ fun SettingsScreen(navController: NavController) {
                         Icon(
                             Icons.AutoMirrored.Filled.ExitToApp,
                             contentDescription = "Sign Out",
-                            modifier = Modifier.size(20.dp)
+                            modifier = Modifier.size(20.dp),
+                            tint = Color.White
                         )
                         Spacer(modifier = Modifier.width(12.dp))
-                        Text("Sign Out")
+                        Text("Sign Out", color = Color.White)
                     }
 
                     Column(
@@ -121,7 +149,6 @@ fun SettingsScreen(navController: NavController) {
 fun EnhancedSettingsItem(
     iconRes: Int, // ✅ accepts R.drawable
     title: String,
-    description: String,
     onClick: () -> Unit
 ) {
     OutlinedButton(
@@ -151,12 +178,7 @@ fun EnhancedSettingsItem(
                     text = title,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Medium,
-                    color = Color(0xFF1E293B)
-                )
-                Text(
-                    text = description,
-                    fontSize = 12.sp,
-                    color = Color(0xFF64748B)
+                    color = MaterialTheme.colorScheme.onSurface
                 )
             }
         }
