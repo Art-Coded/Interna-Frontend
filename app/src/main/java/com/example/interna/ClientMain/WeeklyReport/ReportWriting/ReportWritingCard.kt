@@ -237,14 +237,6 @@ fun ReportWritingCard() {
                     }
                 }
 
-                Spacer(modifier = Modifier.height(12.dp))
-
-                Text(
-                    text = "Describe your weekly activities, learnings, challenges, and achievements during your OJT.",
-                    fontSize = 12.sp,
-                    lineHeight = 16.sp
-                )
-
                 Spacer(modifier = Modifier.height(16.dp))
 
                 // Text Input Area
@@ -313,36 +305,6 @@ fun ReportWritingCard() {
                         fontSize = 10.sp,
                         color = Color(0xFFFF9800)
                     )
-                }
-
-                //weekly report guidelines part
-                Box(modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom =16.dp).background(Color(0xFF2196F3).copy(alpha = 0.1f)))
-                Column{
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(
-                            Icons.Default.Info,
-                            contentDescription = "Guidelines",
-                            tint = gradient_start,
-                            modifier = Modifier.size(20.dp)
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(
-                            text = "Report Writing Guidelines",
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.Medium
-                        )
-                    }
-
-                    Spacer(modifier = Modifier.height(4.dp))
-
-                    Column{
-                        Text(
-                            text = "• Write in detail about your daily activities and tasks.\n• Include specific examples of what you learned.\n• Mention any challenges and how you addressed them.\n• Be honest and reflective about youre experience.\n• (Optional) Use professional language and proper grammar.",
-                            fontSize = 11.sp
-                        )
-                    }
                 }
             }
         }
