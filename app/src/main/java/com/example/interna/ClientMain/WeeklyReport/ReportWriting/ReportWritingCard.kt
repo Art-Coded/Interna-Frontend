@@ -16,10 +16,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Send
-import androidx.compose.material3.AssistChip
-import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -212,21 +209,9 @@ fun ReportWritingCard() {
                                             ) {
 
                                                 if (reportTexts[week.id]?.isNotEmpty() == true) {
-                                                    AssistChip(
-                                                        onClick = { },
-                                                        label = { Text("Draft", fontSize = 8.sp) },
-                                                        colors = AssistChipDefaults.assistChipColors(
-                                                            containerColor = Color(0xFFFF9800).copy(alpha = 0.2f)
-                                                        )
-                                                    )
+                                                    Text("Draft", fontSize = 10.sp)
                                                 } else if (week.status == WeekStatus.PENDING) {
-                                                    AssistChip(
-                                                        onClick = { },
-                                                        label = { Text("Missing", fontSize = 8.sp) },
-                                                        colors = AssistChipDefaults.assistChipColors(
-                                                            containerColor = Color(0xFFFF5722).copy(alpha = 0.2f)
-                                                        )
-                                                    )
+                                                    Text("Missing", fontSize = 10.sp, color = Color.Red)
                                                 }
                                             }
                                         }

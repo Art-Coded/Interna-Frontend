@@ -13,7 +13,6 @@ import androidx.compose.material3.*
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.interna.ClientMain.WeeklyReport.PreviousReports.PreviousReportsCard
 import com.example.interna.ClientMain.WeeklyReport.ReportWriting.ReportWritingCard
 import com.example.interna.ClientMain.WeeklyReport.WeeklyProgress.WeeklyProgressCard
 
@@ -46,8 +45,6 @@ fun WeeklyReportScreen(navController: NavController) {
                 WeeklyProgressCard()
 
                 ReportWritingCard()
-
-                PreviousReportsCard()
 
                 Spacer(modifier = Modifier.height(20.dp))
             }
