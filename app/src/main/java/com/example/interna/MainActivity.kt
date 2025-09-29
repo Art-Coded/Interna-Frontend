@@ -23,6 +23,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.interna.Login.LoginScreen
 import com.example.interna.ClientMain.BottomNav.BottomNavScreen
+import com.example.interna.Login.SchoolPickerScreen
 import com.example.interna.ui.theme.InternaTheme
 //FRONTEND INTERNA
 class MainActivity : ComponentActivity() {
@@ -80,17 +81,15 @@ class MainActivity : ComponentActivity() {
                         enterTransition = { fadeIn(animationSpec = tween(200)) },
                         exitTransition = { fadeOut(animationSpec = tween(200)) }
                     ) {
-//                        composable("onboarding") {
-//                            OnboardingScreen(
-//                                onLoginClick = { navController.navigate("login") {popUpTo("onboarding") {inclusive = true}} },
-//                                signupClick = { navController.navigate("signup") {popUpTo("onboarding") {inclusive = true}} }
-//
-//                            )
-//                        }
+
                         composable("login") {
                             LoginScreen(
-                                homeClick = { navController.navigate("BottomNav") {popUpTo("login") {inclusive = true}} }
+                                homeClick = { navController.navigate("BottomNav") {popUpTo("login") {inclusive = true}} },
+                                schoolClick = { navController.navigate("schoolPicker") }
                             )
+                        }
+                        composable("schoolPicker") {
+                            SchoolPickerScreen(navController = navController)
                         }
 //                        composable("signup") {
 //                            SignupScreen(
@@ -101,7 +100,6 @@ class MainActivity : ComponentActivity() {
                         composable("BottomNav") {
                             BottomNavScreen(rootNavController = navController)
                         }
-
                     }
                 }
             }
