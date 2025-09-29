@@ -54,7 +54,6 @@ fun HomeScreen(navController: NavController) {
                             .height(6.dp)
                     )
 
-
                     Spacer(modifier = Modifier.width(10.dp))
 
                     Text(

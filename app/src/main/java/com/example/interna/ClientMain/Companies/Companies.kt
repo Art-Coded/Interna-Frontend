@@ -271,8 +271,6 @@ fun CompaniesScreen(navController: NavController) {
                                     }
                                 )
 
-
-
                                 // Course Filter
                                 Row(
                                     verticalAlignment = Alignment.CenterVertically,
@@ -391,7 +389,6 @@ fun CompaniesScreen(navController: NavController) {
                                 }
                             }
                         }
-
                     }
                 }
 
@@ -454,6 +451,9 @@ fun CompaniesScreen(navController: NavController) {
                     }
                 }
 
+                item {
+                    Spacer(modifier = Modifier.height(40.dp)) // change to whatever height you need
+                }
 
             }
         }
@@ -516,43 +516,40 @@ fun CompanyCard(
 
                         Text(
                             text = company.description,
-                            fontSize = 12.sp
+                            fontSize = 12.sp,
+                            lineHeight = 16.sp
                         )
 
                         Spacer(modifier = Modifier.height(8.dp))
 
                         Row(
-                            horizontalArrangement = Arrangement.spacedBy(16.dp)
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Icon(
-                                    Icons.Default.LocationOn,
-                                    contentDescription = "Location",
-                                    modifier = Modifier.size(12.dp)
-                                )
-                                Spacer(modifier = Modifier.width(4.dp))
-                                Text(
-                                    text = company.location,
-                                    fontSize = 10.sp,
-                                )
-                            }
+                            Icon(
+                                Icons.Default.LocationOn,
+                                contentDescription = "Location",
+                                modifier = Modifier.size(12.dp)
+                            )
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Text(
+                                text = company.location,
+                                fontSize = 10.sp,
+                            )
+                        }
 
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Icon(
-                                    painter = painterResource(R.drawable.ic_course), // update icon for department
-                                    contentDescription = "Department",
-                                    modifier = Modifier.size(12.dp)
-                                )
-                                Spacer(modifier = Modifier.width(4.dp))
-                                Text(
-                                    text = company.department, // updated field
-                                    fontSize = 10.sp
-                                )
-                            }
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(
+                                painter = painterResource(R.drawable.ic_course), // update icon for department
+                                contentDescription = "Department",
+                                modifier = Modifier.size(12.dp)
+                            )
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Text(
+                                text = company.department, // updated field
+                                fontSize = 10.sp
+                            )
                         }
                     }
                 }
@@ -573,8 +570,7 @@ fun CompanyCard(
                             )
                     ) {
                         Column(
-                            modifier = Modifier.padding(12.dp),
-                            verticalArrangement = Arrangement.spacedBy(8.dp)
+                            modifier = Modifier.padding(12.dp)
                         ) {
                             Row(
                                 verticalAlignment = Alignment.CenterVertically
@@ -598,38 +594,34 @@ fun CompanyCard(
                                 fontWeight = FontWeight.Medium
                             )
 
-                            Column(
-                                verticalArrangement = Arrangement.spacedBy(4.dp)
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Row(
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
-                                    Icon(
-                                        Icons.Default.Phone,
-                                        contentDescription = "Phone",
-                                        modifier = Modifier.size(12.dp)
-                                    )
-                                    Spacer(modifier = Modifier.width(8.dp))
-                                    Text(
-                                        text = company.phone,
-                                        fontSize = 12.sp,
-                                    )
-                                }
+                                Icon(
+                                    Icons.Default.Phone,
+                                    contentDescription = "Phone",
+                                    modifier = Modifier.size(12.dp)
+                                )
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text(
+                                    text = company.phone,
+                                    fontSize = 12.sp,
+                                )
+                            }
 
-                                Row(
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
-                                    Icon(
-                                        Icons.Default.Email,
-                                        contentDescription = "Email",
-                                        modifier = Modifier.size(12.dp)
-                                    )
-                                    Spacer(modifier = Modifier.width(8.dp))
-                                    Text(
-                                        text = company.email,
-                                        fontSize = 12.sp,
-                                    )
-                                }
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Icon(
+                                    Icons.Default.Email,
+                                    contentDescription = "Email",
+                                    modifier = Modifier.size(12.dp)
+                                )
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text(
+                                    text = company.email,
+                                    fontSize = 12.sp,
+                                )
                             }
                         }
                     }

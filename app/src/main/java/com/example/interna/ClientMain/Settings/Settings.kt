@@ -1,5 +1,7 @@
 package com.example.interna.ClientMain.Settings
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
@@ -28,6 +31,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.SegmentedButtonDefaults.Icon
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -43,6 +47,7 @@ import com.example.interna.R
 @Composable
 fun SettingsScreen(navController: NavController) {
     val scrollState = rememberScrollState()
+    val isDarkTheme = isSystemInDarkTheme()
 
     Box(modifier = Modifier.fillMaxSize()){
         Column(modifier = Modifier.fillMaxSize()) {
@@ -61,50 +66,75 @@ fun SettingsScreen(navController: NavController) {
 
             Column(
                 modifier = Modifier
-                    .padding(start = 12.dp, end = 12.dp, top = 2.dp)
                     .verticalScroll(scrollState)
             ) {
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+                    shape = RoundedCornerShape(16.dp)
                 ) {
-                    EnhancedSettingsItem(
-                        iconRes = R.drawable.ic_account,
-                        title = "Account Settings",
-                        onClick = { /* Navigate to account settings */ }
-                    )
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(
+                                if (isDarkTheme) {
+                                    Color.Black.copy(alpha = 0.3f)
+                                } else {
+                                    MaterialTheme.colorScheme.surface
+                                }
+                            )
+                    ) {
+                        Column(
+                            verticalArrangement = Arrangement.spacedBy(12.dp),
+                            modifier = Modifier.padding(start = 12.dp, end = 12.dp, top = 20.dp, bottom = 20.dp)
+                        ) {
+                            EnhancedSettingsItem(
+                                iconRes = R.drawable.ic_account,
+                                title = "Account Settings",
+                                onClick = { /* Navigate to account settings */ }
+                            )
 
-                    EnhancedSettingsItem(
-                        iconRes = R.drawable.ic_notification,
-                        title = "Notification Settings",
-                        onClick = { /* Navigate to notifications */ }
-                    )
+                            EnhancedSettingsItem(
+                                iconRes = R.drawable.ic_notification,
+                                title = "Notification Settings",
+                                onClick = { /* Navigate to notifications */ }
+                            )
 
-                    EnhancedSettingsItem(
-                        iconRes = R.drawable.ic_display,
-                        title = "Display",
-                        onClick = { /* Navigate to display */ }
-                    )
+                            EnhancedSettingsItem(
+                                iconRes = R.drawable.ic_display,
+                                title = "Display",
+                                onClick = { /* Navigate to display */ }
+                            )
 
-                    EnhancedSettingsItem(
-                        iconRes = R.drawable.ic_password,
-                        title = "Change Password",
-                        onClick = { /* Navigate to change password */ }
-                    )
+                            EnhancedSettingsItem(
+                                iconRes = R.drawable.ic_password,
+                                title = "Change Password",
+                                onClick = { /* Navigate to change password */ }
+                            )
 
-                    EnhancedSettingsItem(
-                        iconRes = R.drawable.ic_mail,
-                        title = "Report a bug",
-                        onClick = { /* Contact support */ }
-                    )
+                            EnhancedSettingsItem(
+                                iconRes = R.drawable.ic_mail,
+                                title = "Report a bug",
+                                onClick = { /* Contact support */ }
+                            )
 
-                    EnhancedSettingsItem(
-                        iconRes = R.drawable.ic_info,
-                        title = "Terms and Policies",
-                        onClick = { /* Terms and Policies */ }
-                    )
+                            EnhancedSettingsItem(
+                                iconRes = R.drawable.ic_info,
+                                title = "Terms and Policies",
+                                onClick = { /* Terms and Policies */ }
+                            )
+                        }
+                    }
+                }
 
-                    Spacer(modifier = Modifier.height(20.dp))
 
+                Spacer(modifier = Modifier.height(10.dp))
+
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                    modifier = Modifier.padding(horizontal = 12.dp)
+                ) {
                     Button(
                         onClick = { /* Sign out */ },
                         modifier = Modifier
@@ -134,11 +164,8 @@ fun SettingsScreen(navController: NavController) {
                             color = Color(0xFF9CA3AF)
                         )
                     }
-
-                    Spacer(modifier = Modifier.height(80.dp))
                 }
             }
-
 
         }
     }

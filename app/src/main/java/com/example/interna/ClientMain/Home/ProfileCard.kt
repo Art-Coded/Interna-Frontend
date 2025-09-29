@@ -86,8 +86,7 @@ fun ProfileCard() {
                         .align(Alignment.BottomEnd)
                         .size(24.dp)
                         .clip(CircleShape)
-                        .alpha(0.9f)
-                        .background(Color(0xFF4CAF50))
+                        .background(gradient_start)
                         .clickable {
                             scope.launch { }
                         },
