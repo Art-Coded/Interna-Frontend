@@ -92,37 +92,37 @@ fun SettingsScreen(navController: NavController) {
                             EnhancedSettingsItem(
                                 iconRes = R.drawable.ic_account,
                                 title = "Account Settings",
-                                onClick = { /* Navigate to account settings */ }
+                                onClick = { navController.navigate("accountEdit") }
                             )
 
                             EnhancedSettingsItem(
                                 iconRes = R.drawable.ic_notification,
                                 title = "Notification Settings",
-                                onClick = { /* Navigate to notifications */ }
+                                onClick = { navController.navigate("notification") }
                             )
 
                             EnhancedSettingsItem(
                                 iconRes = R.drawable.ic_display,
                                 title = "Display",
-                                onClick = { /* Navigate to display */ }
+                                onClick = { navController.navigate("display") }
                             )
 
                             EnhancedSettingsItem(
                                 iconRes = R.drawable.ic_password,
                                 title = "Change Password",
-                                onClick = { /* Navigate to change password */ }
+                                onClick = { navController.navigate("changePassword") }
                             )
 
                             EnhancedSettingsItem(
                                 iconRes = R.drawable.ic_mail,
                                 title = "Report a bug",
-                                onClick = { /* Contact support */ }
+                                onClick = { navController.navigate("reportBug") }
                             )
 
                             EnhancedSettingsItem(
                                 iconRes = R.drawable.ic_info,
                                 title = "Terms and Policies",
-                                onClick = { /* Terms and Policies */ }
+                                onClick = { navController.navigate("TOS") }
                             )
                         }
                     }

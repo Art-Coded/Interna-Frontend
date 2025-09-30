@@ -23,7 +23,13 @@ import androidx.navigation.compose.*
 import com.example.interna.ClientMain.Companies.CompaniesScreen
 import com.example.interna.ClientMain.Home.HomeScreen
 import com.example.interna.ClientMain.Requirements.RequirementsScreen
+import com.example.interna.ClientMain.Settings.AccountSettings.AccountSettingsScreen
+import com.example.interna.ClientMain.Settings.ChangePassword.ChangePassScreen
+import com.example.interna.ClientMain.Settings.Display.DisplayScreen
+import com.example.interna.ClientMain.Settings.Notification.NotificationScreen
+import com.example.interna.ClientMain.Settings.ReportBug.ReportBugScreen
 import com.example.interna.ClientMain.Settings.SettingsScreen
+import com.example.interna.ClientMain.Settings.TermsPolicies.TOSScreen
 import com.example.interna.ClientMain.WeeklyReport.WeeklyReportScreen
 
 sealed class NavItem(val route: String, val label: String, val lottieIcon: String?) {
@@ -90,6 +96,15 @@ fun BottomNavScreen(rootNavController: NavHostController) {
             composable("requirements") { RequirementsScreen(navController = navController) }
             composable("companies") { CompaniesScreen(navController = navController) }
             composable("settings") { SettingsScreen(navController = navController) }
+
+            //Settings
+            composable("accountEdit") { AccountSettingsScreen(navController = navController) }
+            composable("notification") { NotificationScreen(navController = navController) }
+            composable("display") { DisplayScreen(navController = navController) }
+            composable("changePassword") { ChangePassScreen(navController = navController) }
+            composable("reportBug") { ReportBugScreen(navController = navController) }
+            composable("TOS") { TOSScreen(navController = navController) }
+
 
         }
     }
