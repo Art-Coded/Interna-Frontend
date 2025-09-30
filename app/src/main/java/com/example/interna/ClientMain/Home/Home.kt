@@ -30,6 +30,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.interna.ClientMain.Home.AttendanceHistory.AttendanceHistoryCard
 import com.example.interna.R
 import kotlinx.coroutines.launch
 
@@ -95,7 +96,7 @@ fun HomeScreen(navController: NavController) {
 
                 AttendanceCard()
 
-                AttendanceHistoryCard()
+                AttendanceHistoryCard(navController = navController)
 
                 ProgressBreakdownCard()
 

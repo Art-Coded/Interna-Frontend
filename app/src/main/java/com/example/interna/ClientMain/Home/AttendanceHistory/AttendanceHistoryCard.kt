@@ -1,4 +1,4 @@
-package com.example.interna.ClientMain.Home
+package com.example.interna.ClientMain.Home.AttendanceHistory
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -9,7 +9,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Warning
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -27,12 +26,13 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.interna.ui.theme.blue_green
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 @Composable
-fun AttendanceHistoryCard() {
+fun AttendanceHistoryCard(navController: NavController) {
     val isDarkTheme = isSystemInDarkTheme()
     val lineColor = MaterialTheme.colorScheme.primary
 
@@ -98,7 +98,7 @@ fun AttendanceHistoryCard() {
                                         }
                                     },
                                     onTap = {
-                                        // handle click here
+                                        navController.navigate("allAttendance")
                                     }
                                 )
                             }

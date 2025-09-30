@@ -21,6 +21,8 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.*
 import com.example.interna.ClientMain.Companies.CompaniesScreen
+import com.example.interna.ClientMain.Home.AttendanceHistory.AllAttendance
+import com.example.interna.ClientMain.Home.AttendanceHistory.AttendanceHistoryCard
 import com.example.interna.ClientMain.Home.HomeScreen
 import com.example.interna.ClientMain.Requirements.RequirementsScreen
 import com.example.interna.ClientMain.Settings.AccountSettings.AccountSettingsScreen
@@ -97,7 +99,10 @@ fun BottomNavScreen(rootNavController: NavHostController) {
             composable("companies") { CompaniesScreen(navController = navController) }
             composable("settings") { SettingsScreen(navController = navController) }
 
-            //Settings
+            //Home screen
+            composable("allAttendance") { AllAttendance(navController = navController) }
+
+            //Settings screen
             composable("accountEdit") { AccountSettingsScreen(navController = navController) }
             composable("notification") { NotificationScreen(navController = navController) }
             composable("display") { DisplayScreen(navController = navController) }

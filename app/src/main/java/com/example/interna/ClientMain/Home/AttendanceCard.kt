@@ -159,7 +159,6 @@ fun AttendanceCard() {
                                 .padding(top = 8.dp)
                                 .clip(RoundedCornerShape(12.dp))
                                 .background(Color.Red.copy(0.9f))
-                                .border(0.2.dp, Color.Black, RoundedCornerShape(12.dp)) // outline
                                 .padding(horizontal = 14.dp, vertical = 5.dp) // inner padding
                         ) {
                             Text(
@@ -190,7 +189,6 @@ fun AttendanceCard() {
                                 .padding(top = 8.dp)
                                 .clip(RoundedCornerShape(12.dp))
                                 .background(Color.Gray.copy(0.9f)) // fill background
-                                .border(0.2.dp, Color.Black, RoundedCornerShape(12.dp)) // outline
                                 .padding(horizontal = 14.dp, vertical = 5.dp) // inner padding
                         ) {
                             Text(

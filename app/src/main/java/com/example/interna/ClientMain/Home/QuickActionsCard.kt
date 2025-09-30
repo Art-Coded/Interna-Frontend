@@ -200,14 +200,14 @@ fun QuickActionsCard() {
 
                 Spacer(modifier = Modifier.height(12.dp))
 
-                // Row 3 - Request Offline Clock-In
+                // 3. Holiday
                 OutlinedButton(
                     onClick = { /* TODO */ },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(56.dp),
                     shape = RoundedCornerShape(12.dp),
-                    border = BorderStroke(1.dp, Color(0xFFFF9800))
+                    border = BorderStroke(1.dp, Color(0xFF9C27B0))
                 ) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
@@ -215,13 +215,13 @@ fun QuickActionsCard() {
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         Icon(
-                            painter = painterResource(id = R.drawable.ic_change),
-                            contentDescription = "Change Work Time",
-                            tint = Color(0xFFFF9800),
+                            Icons.Default.Info,
+                            contentDescription = "Mark today as Holiday",
+                            tint = Color(0xFF9C27B0),
                             modifier = Modifier.size(22.dp)
                         )
                         Spacer(modifier = Modifier.width(12.dp))
-                        Text("Change Work Time", fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurface)
+                        Text("Mark today as Holiday", fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurface)
                     }
                 }
 
@@ -254,14 +254,14 @@ fun QuickActionsCard() {
 
                 Spacer(modifier = Modifier.height(12.dp))
 
-                // 5. FAQs
+                // Row 5 - Change work time
                 OutlinedButton(
                     onClick = { /* TODO */ },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(56.dp),
                     shape = RoundedCornerShape(12.dp),
-                    border = BorderStroke(1.dp, Color(0xFF9C27B0))
+                    border = BorderStroke(1.dp, Color(0xFFFF9800))
                 ) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
@@ -269,13 +269,13 @@ fun QuickActionsCard() {
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         Icon(
-                            Icons.Default.Info,
-                            contentDescription = "FAQs",
-                            tint = Color(0xFF9C27B0),
+                            painter = painterResource(id = R.drawable.ic_change),
+                            contentDescription = "Change Work Time",
+                            tint = Color(0xFFFF9800),
                             modifier = Modifier.size(22.dp)
                         )
                         Spacer(modifier = Modifier.width(12.dp))
-                        Text("FAQs", fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurface)
+                        Text("Change Work Time", fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurface)
                     }
                 }
             }
