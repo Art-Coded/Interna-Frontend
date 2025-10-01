@@ -67,11 +67,11 @@ fun SchoolPickerScreen(navController: NavController) {
 
     val context = LocalContext.current
     var searchQuery by rememberSaveable { mutableStateOf("") }
-    var selectedRegion by rememberSaveable { mutableStateOf("All") }
+    var selectedRegion by rememberSaveable { mutableStateOf("All Regions") }
     var isDropdownExpanded by rememberSaveable { mutableStateOf(false) }
 
     val regions = listOf(
-        "All",
+        "All Regions",
         "Region I",
         "Region II",
         "Region III",
@@ -109,7 +109,7 @@ fun SchoolPickerScreen(navController: NavController) {
     val filteredCompanies = mockSchools.filter { school ->
         val matchesSearch = school.name.contains(searchQuery, ignoreCase = true)
 
-        val matchesCourse = selectedRegion == "All" || school.region == selectedRegion
+        val matchesCourse = selectedRegion == "All Regions" || school.region == selectedRegion
 
         matchesSearch && matchesCourse
     }
@@ -144,9 +144,7 @@ fun SchoolPickerScreen(navController: NavController) {
             )
         }
 
-        LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(12.dp)
-        )  {
+        LazyColumn {
             item {
                 Card(
                     modifier = Modifier.fillMaxWidth(),
@@ -318,6 +316,10 @@ fun SchoolPickerScreen(navController: NavController) {
                 }
             }
 
+            item {
+                Spacer(modifier = Modifier.height(10.dp))
+            }
+
             if (filteredCompanies.isEmpty()) {
                 item {
                     Card(
@@ -378,7 +380,7 @@ fun SchoolPickerScreen(navController: NavController) {
             }
 
             item {
-                Spacer(modifier = Modifier.height(40.dp)) // change to whatever height you need
+                Spacer(modifier = Modifier.height(40.dp))
             }
         }
 
@@ -391,47 +393,41 @@ fun SchoolCard(
 ) {
     val isDarkTheme = isSystemInDarkTheme()
 
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(
+                if (isDarkTheme) {
+                    Color.Black.copy(alpha = 0.3f)
+                } else {
+                    MaterialTheme.colorScheme.surface
+                }
+            )
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(
-                    if (isDarkTheme) {
-                        Color.Black.copy(alpha = 0.3f)
-                    } else {
-                        MaterialTheme.colorScheme.surface
-                    }
-                )
+        Column(
+            modifier = Modifier.padding(16.dp)
         ) {
-            Column(
-                modifier = Modifier.padding(16.dp)
+            // School Header
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.Top
             ) {
-                // School Header
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.Top
-                ) {
-                    Column(modifier = Modifier.weight(1f)) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            Image(
-                                painter = painterResource(id = school.imageRes),
-                                contentDescription = "School",
-                                modifier = Modifier.size(46.dp)
-                            )
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text(
-                                text = school.name,
-                                fontSize = 16.sp,
-                                fontWeight = FontWeight.SemiBold
-                            )
-                        }
+                Column(modifier = Modifier.weight(1f)) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Image(
+                            painter = painterResource(id = school.imageRes),
+                            contentDescription = "School",
+                            modifier = Modifier.size(46.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = school.name,
+                            fontSize = 15.sp
+                        )
                     }
                 }
             }
