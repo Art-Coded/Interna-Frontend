@@ -120,3 +120,5 @@ fun HomeScreen(navController: NavController) {
 
 //Pin Your Workplace (Google maps API drag and drop with coordinates display)
 //Work Schedule (Set work days per week and work hours per day)
+
+

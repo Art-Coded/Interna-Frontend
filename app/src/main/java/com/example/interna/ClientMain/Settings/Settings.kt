@@ -68,66 +68,46 @@ fun SettingsScreen(navController: NavController) {
                 modifier = Modifier
                     .verticalScroll(scrollState)
             ) {
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-                    shape = RoundedCornerShape(16.dp)
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                    modifier = Modifier.padding(start = 12.dp, end = 12.dp, top = 20.dp, bottom = 20.dp)
                 ) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .background(
-                                if (isDarkTheme) {
-                                    Color.Black.copy(alpha = 0.3f)
-                                } else {
-                                    MaterialTheme.colorScheme.surface
-                                }
-                            )
-                    ) {
-                        Column(
-                            verticalArrangement = Arrangement.spacedBy(12.dp),
-                            modifier = Modifier.padding(start = 12.dp, end = 12.dp, top = 20.dp, bottom = 20.dp)
-                        ) {
-                            EnhancedSettingsItem(
-                                iconRes = R.drawable.ic_account,
-                                title = "Account Settings",
-                                onClick = { navController.navigate("accountEdit") }
-                            )
+                    EnhancedSettingsItem(
+                        iconRes = R.drawable.ic_account,
+                        title = "Account Settings",
+                        onClick = { navController.navigate("accountEdit") }
+                    )
 
-                            EnhancedSettingsItem(
-                                iconRes = R.drawable.ic_notification,
-                                title = "Notification Settings",
-                                onClick = { navController.navigate("notification") }
-                            )
+                    EnhancedSettingsItem(
+                        iconRes = R.drawable.ic_notification,
+                        title = "Notification Settings",
+                        onClick = { navController.navigate("notification") }
+                    )
 
-                            EnhancedSettingsItem(
-                                iconRes = R.drawable.ic_display,
-                                title = "Display",
-                                onClick = { navController.navigate("display") }
-                            )
+                    EnhancedSettingsItem(
+                        iconRes = R.drawable.ic_display,
+                        title = "Display",
+                        onClick = { navController.navigate("display") }
+                    )
 
-                            EnhancedSettingsItem(
-                                iconRes = R.drawable.ic_password,
-                                title = "Change Password",
-                                onClick = { navController.navigate("changePassword") }
-                            )
+                    EnhancedSettingsItem(
+                        iconRes = R.drawable.ic_password,
+                        title = "Change Password",
+                        onClick = { navController.navigate("changePassword") }
+                    )
 
-                            EnhancedSettingsItem(
-                                iconRes = R.drawable.ic_mail,
-                                title = "Report a bug",
-                                onClick = { navController.navigate("reportBug") }
-                            )
+                    EnhancedSettingsItem(
+                        iconRes = R.drawable.ic_mail,
+                        title = "Report a bug",
+                        onClick = { navController.navigate("reportBug") }
+                    )
 
-                            EnhancedSettingsItem(
-                                iconRes = R.drawable.ic_info,
-                                title = "Terms and Policies",
-                                onClick = { navController.navigate("TOS") }
-                            )
-                        }
-                    }
+                    EnhancedSettingsItem(
+                        iconRes = R.drawable.ic_info,
+                        title = "Terms and Policies",
+                        onClick = { navController.navigate("TOS") }
+                    )
                 }
-
 
                 Spacer(modifier = Modifier.height(10.dp))
 

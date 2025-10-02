@@ -23,6 +23,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.interna.Login.LoginScreen
 import com.example.interna.ClientMain.BottomNav.BottomNavScreen
+import com.example.interna.ClientMain.signup.IntroScreen
 import com.example.interna.Login.SchoolPickerScreen
 import com.example.interna.ui.theme.InternaTheme
 //FRONTEND INTERNA
@@ -84,13 +85,16 @@ class MainActivity : ComponentActivity() {
 
                         composable("login") {
                             LoginScreen(
-                                homeClick = { navController.navigate("BottomNav") {popUpTo("login") {inclusive = true}} },
+                                homeClick = { navController.navigate("homeSignup") {popUpTo("login") {inclusive = true}} },
                                 schoolClick = { navController.navigate("schoolPicker") }
                             )
                         }
-                        composable("schoolPicker") {
-                            SchoolPickerScreen(navController = navController)
-                        }
+                        //signup welcome screen
+                        composable("homeSignup") { IntroScreen(navController = navController) }
+
+                        //school picker
+                        composable("schoolPicker") { SchoolPickerScreen(navController = navController) }
+
 //                        composable("signup") {
 //                            SignupScreen(
 //                                loginClick = { navController.navigate("login") {popUpTo("signup") {inclusive = true}} },

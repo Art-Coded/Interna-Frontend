@@ -167,7 +167,7 @@ fun QuickActionsCard() {
                             modifier = Modifier.size(22.dp)
                         )
                         Spacer(modifier = Modifier.width(12.dp))
-                        Text("Request Absence", fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurface)
+                        Text("Mark Today as Absent", fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurface)
                     }
                 }
 
@@ -278,6 +278,8 @@ fun QuickActionsCard() {
                         Text("Change Work Time", fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurface)
                     }
                 }
+
+                //set as wfh?
             }
         }
     }

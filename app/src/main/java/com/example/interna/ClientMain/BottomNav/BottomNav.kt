@@ -22,7 +22,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.*
 import com.example.interna.ClientMain.Companies.CompaniesScreen
 import com.example.interna.ClientMain.Home.AttendanceHistory.AllAttendance
-import com.example.interna.ClientMain.Home.AttendanceHistory.AttendanceHistoryCard
 import com.example.interna.ClientMain.Home.HomeScreen
 import com.example.interna.ClientMain.Requirements.RequirementsScreen
 import com.example.interna.ClientMain.Settings.AccountSettings.AccountSettingsScreen
