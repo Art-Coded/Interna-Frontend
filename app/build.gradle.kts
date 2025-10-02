@@ -87,7 +87,7 @@ dependencies {
 
     implementation("com.github.skydoves:balloon-compose:1.6.13")
 
-    implementation("com.github.binayshaw7777:KotStep:3.0.1")
+    implementation("com.github.commandiron:ComposeLoading:1.0.4")
 
     implementation(libs.coil.compose) // preload images before navigation to save memory (improves performance from loading images)
 
