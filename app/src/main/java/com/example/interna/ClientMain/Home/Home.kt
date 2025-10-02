@@ -106,19 +106,4 @@ fun HomeScreen(navController: NavController) {
     }
 }
 
-//Monitoring Sheet input field requirements
-
-//Sex M or F (Check box)
-//Complete Name of Host/Company  (HTE) (Input field)
-//Complete Address of HTE (input field)
-//MOA   Notarized and Submitted to the SIPP Coordinator|Still Processing|None (Check boxes among those 3)
-//Regional Location of the HTE (Input field)
-//Start of Internship (date picker)
-//How many hours of internship to render (input field in numbers)
-//Name of Manager/Immediate Supervisor (Input field)
-//Manager/Immediate Supervisor Contact Number (input number)
-
-//Pin Your Workplace (Google maps API drag and drop with coordinates display)
-//Work Schedule (Set work days per week and work hours per day)
-
 
