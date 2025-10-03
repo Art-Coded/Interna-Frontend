@@ -179,8 +179,7 @@ fun IntroScreen(navController: NavController) {
                     0 -> SlideOne()
                     1 -> SlideTwo()
                     2 -> SlideThree()
-                    3 -> SlideFour()
-                    4 -> SlideFive()
+                    3 -> SlideFour(navController = navController)
                 }
             }
         }
