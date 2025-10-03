@@ -2,6 +2,10 @@ package com.example.interna.ClientMain.signup
 
 import android.content.Intent
 import android.net.Uri
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -83,13 +87,11 @@ fun SlideOne() {
 
     LaunchedEffect(composition) {
         if (composition != null) {
-            // Optional delay to ensure smooth load
             isLoading = false
         }
     }
 
     if (isLoading) {
-        // 🔴 Full screen loading
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -120,28 +122,41 @@ fun SlideOne() {
                     .verticalScroll(scrollState)
             ) {
 
-                LottieAnimation(
-                    composition = composition,
-                    iterations = LottieConstants.IterateForever,
-                    modifier = Modifier.size(320.dp)
-                )
+                AnimatedVisibility(
+                    visible = !isLoading,
+                    enter = fadeIn(animationSpec = tween(durationMillis = 5200)) +
+                            slideInVertically(
+                                animationSpec = tween(durationMillis = 5200),
+                                initialOffsetY = { fullHeight -> fullHeight / 4 }
+                            )
+                ) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        LottieAnimation(
+                            composition = composition,
+                            iterations = LottieConstants.IterateForever,
+                            modifier = Modifier.size(320.dp)
+                        )
 
-                Text(
-                    text = "Welcome to Interna!",
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 34.sp,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .padding(horizontal = 12.dp),
-                )
+                        Text(
+                            text = "Welcome to Interna!",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 34.sp,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier
+                                .padding(horizontal = 12.dp),
+                        )
 
-                Text(
-                    text = "Before you begin your Internship, we would like to collect your data first. Would you like to proceed?",
-                    fontSize = 14.sp,
-                    lineHeight = 16.sp,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp)
-                )
+                        Text(
+                            text = "Before you begin your Internship, we would like to collect your school's Internship requirements first. Would you like to proceed?",
+                            fontSize = 14.sp,
+                            lineHeight = 16.sp,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp)
+                        )
+                    }
+                }
 
             }
 
@@ -238,7 +253,7 @@ fun SlideOne() {
                         .height(48.dp)
                         .padding(horizontal = 12.dp)
                 ) {
-                    Text(text = "Next")
+                    Text(text = "Proceed")
                 }
             }
         }
