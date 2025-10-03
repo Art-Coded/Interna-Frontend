@@ -25,6 +25,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -46,6 +47,8 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.interna.R
 import com.example.interna.Reusables.PagerIndicator
 import com.example.interna.ui.theme.blue_green
@@ -110,7 +113,7 @@ fun IntroScreen(navController: NavController) {
                     Image(
                         painter = painterResource(id = R.drawable.internalogo),
                         contentDescription = "Interna Logo",
-                        modifier = Modifier.height(44.dp),
+                        modifier = Modifier.height(44.dp).padding(end = 15.dp),
                         colorFilter = ColorFilter.tint(
                             if (isDarkTheme) MaterialTheme.colorScheme.onBackground
                             else MaterialTheme.colorScheme.onBackground
@@ -123,6 +126,7 @@ fun IntroScreen(navController: NavController) {
                 val builder = rememberBalloonBuilder {
                     setArrowSize(0)
                     setCornerRadius(8f)
+                    setMarginTop(6)
                     setBalloonAnimation(BalloonAnimation.OVERSHOOT)
                     setBackgroundColor(background)
                 }
@@ -142,7 +146,7 @@ fun IntroScreen(navController: NavController) {
                 ) { balloonWindow ->
                     IconButton(
                         onClick = { balloonWindow.showAlignTop() },
-                        modifier = Modifier.size(32.dp) // keep consistent size
+                        modifier = Modifier.size(32.dp).padding(end = 10.dp) // keep consistent size
                     ) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_info),

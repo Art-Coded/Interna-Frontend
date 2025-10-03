@@ -5,6 +5,7 @@ import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -29,6 +30,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -55,6 +57,12 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
+import com.airbnb.lottie.compose.rememberLottieComposition
+import com.commandiron.compose_loading.ChasingDots
+import com.commandiron.compose_loading.WanderingCubes
 import com.example.interna.R
 import com.example.interna.ui.theme.blue_green
 import com.example.interna.ui.theme.gradient_start
@@ -70,11 +78,32 @@ fun SlideOne() {
     val focusManager = LocalFocusManager.current
     val keyboardController = LocalSoftwareKeyboardController.current
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
+    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.home_intro))
+    var isLoading by remember { mutableStateOf(true) }
 
-    ) {
+    LaunchedEffect(composition) {
+        if (composition != null) {
+            // Optional delay to ensure smooth load
+            isLoading = false
+        }
+    }
+
+    if (isLoading) {
+        // 🔴 Full screen loading
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .pointerInput(Unit) {
+                    detectTapGestures {
+                        focusManager.clearFocus()
+                        keyboardController?.hide()
+                    }
+                },
+            contentAlignment = Alignment.Center
+        ) {
+            ChasingDots(modifier = Modifier.size(64.dp).padding(bottom = 30.dp))
+        }
+    } else {
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -88,8 +117,15 @@ fun SlideOne() {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
-                    .padding(top = 30.dp)
+                    .verticalScroll(scrollState)
             ) {
+
+                LottieAnimation(
+                    composition = composition,
+                    iterations = LottieConstants.IterateForever,
+                    modifier = Modifier.size(320.dp)
+                )
+
                 Text(
                     text = "Welcome to Interna!",
                     fontWeight = FontWeight.Bold,
@@ -100,7 +136,7 @@ fun SlideOne() {
                 )
 
                 Text(
-                    text = "Before you begin your Internship, we would like to collect your data first.",
+                    text = "Before you begin your Internship, we would like to collect your data first. Would you like to proceed?",
                     fontSize = 14.sp,
                     lineHeight = 16.sp,
                     textAlign = TextAlign.Center,
@@ -189,8 +225,6 @@ fun SlideOne() {
                     }
                 )
 
-                Spacer(modifier = Modifier.height(24.dp))
-
                 Button(
                     onClick = {
                         // TODO: Navigate to Next
@@ -207,18 +241,7 @@ fun SlideOne() {
                     Text(text = "Next")
                 }
             }
-
-
-
-
-//            Button(
-//                onClick = { navController.navigate("BottomNav") },
-//                modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp)
-//            ) {
-//                Text("Next")
-//            }
-
-
         }
+
     }
 }
