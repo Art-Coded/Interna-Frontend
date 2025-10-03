@@ -241,9 +241,9 @@ fun LoginScreen(homeClick: () -> Unit, schoolClick: () -> Unit) {
                         IconButton(onClick = { passwordVisible = !passwordVisible }) {
                             Icon(
                                 painter = painterResource(
-                                    id = if (passwordVisible) R.drawable.ic_visibility_off else R.drawable.ic_visibility
+                                    id = if (passwordVisible) R.drawable.ic_visibility else R.drawable.ic_visibility_off
                                 ),
-                                contentDescription = if (passwordVisible) "Hide password" else "Show password"
+                                contentDescription = if (passwordVisible) "Show password" else "Hide password"
                             )
                         }
                     }
