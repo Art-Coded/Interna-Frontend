@@ -1,31 +1,33 @@
 package com.example.interna.ClientMain.signup
 
-import android.content.Intent
-import android.net.Uri
-import android.util.Patterns
-import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
+import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDialog
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -33,393 +35,310 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.TextLayoutResult
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.interna.R
-import com.example.interna.ui.theme.gradient_start
+import androidx.navigation.NavController
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SlideThree() {
-    var gmail by remember { mutableStateOf("") }
-    var confirmGmail by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    var confirmPassword by remember { mutableStateOf("") }
+    val scrollState = rememberScrollState()
+    val isDarkTheme = isSystemInDarkTheme()
 
     val focusManager = LocalFocusManager.current
-    val confirmGmailFocusRequester = remember { FocusRequester() }
-    val passwordFocusRequester = remember { FocusRequester() }
-    val confirmPasswordFocusRequester = remember { FocusRequester() }
     val keyboardController = LocalSoftwareKeyboardController.current
 
-    var showGmailError by remember { mutableStateOf(false) }
-    var showConfirmGmailError by remember { mutableStateOf(false) }
+    // State variables for form fields
+    var sex by remember { mutableStateOf("") }
+    var companyName by remember { mutableStateOf("") }
+    var companyAddress by remember { mutableStateOf("") }
+    var moaStatus by remember { mutableStateOf("") }
+    var regionalLocation by remember { mutableStateOf("") }
+    var internshipStartDate by remember { mutableStateOf<Long?>(null) }
+    var internshipHours by remember { mutableStateOf("") }
+    var managerName by remember { mutableStateOf("") }
+    var managerContact by remember { mutableStateOf("") }
 
-    // New: show error if confirm password doesn't match password
-    val showConfirmPasswordError = remember(password, confirmPassword) {
-        confirmPassword.isNotEmpty() && confirmPassword != password
-    }
-    val showConfirmGmailMismatch = remember(gmail, confirmGmail) { // Add this
-        confirmGmail.isNotEmpty() && confirmGmail != gmail
-    }
+    // Work Schedule States
+    var startDay by remember { mutableStateOf("") }
+    var endDay by remember { mutableStateOf("") }
+    var startTime by remember { mutableStateOf("") }
+    var endTime by remember { mutableStateOf("") }
 
-    var passwordVisible by remember { mutableStateOf(false) }
-    var confirmPasswordVisible by remember { mutableStateOf(false) }
+    // State for date picker
+    var showDatePicker by remember { mutableStateOf(false) }
+    val datePickerState = rememberDatePickerState()
 
-    var emailError by remember { mutableStateOf(false) }
-    var confirmEmailError by remember { mutableStateOf(false) } // Add this
-    var passwordError by remember { mutableStateOf(false) }
-    var confirmPasswordError by remember { mutableStateOf(false) }
+    // State for dropdown menus
+    var sexExpanded by remember { mutableStateOf(false) }
+    var moaExpanded by remember { mutableStateOf(false) }
 
-    val scrollState = rememberScrollState()
-
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .verticalScroll(scrollState)
-    ){
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .pointerInput(Unit) {
-                    detectTapGestures {
-                        focusManager.clearFocus()
-                        keyboardController?.hide()
-                    }
-                }
-        ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .align(Alignment.TopCenter)
-            ) {
-                Text(
-                    text = "Secure Your Account",
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 34.sp,
-                    lineHeight = 28.sp,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .padding(horizontal = 12.dp)
-                )
-                Text(
-                    text = "After setting up your account, you will be able to login using your Email Account or your own Student Number. Whatever your preference!",
-                    fontSize = 14.sp,
-                    lineHeight = 16.sp,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .padding(horizontal = 12.dp, vertical = 4.dp)
-
-                )
-
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(vertical = 50.dp, horizontal = 16.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    // Email Field
-                    OutlinedTextField(
-                        value = gmail,
-                        onValueChange = {
-                            gmail = it
-                            showGmailError = false
-                            emailError = false
-                        },
-                        label = { Text("Email") },
-                        isError = showGmailError || emailError,
-                        supportingText = {
-                            Text(
-                                text = when {
-                                    emailError -> "Email field cannot be empty."
-                                    showGmailError -> "Please enter a valid email address"
-                                    else -> " "
-                                },
-                                color = if (showGmailError || emailError) MaterialTheme.colorScheme.error else Color.Transparent,
-                                style = MaterialTheme.typography.bodySmall,
-                                modifier = Modifier.height(20.dp)
-                            )
-                        },
-                        singleLine = true,
-                        modifier = Modifier.fillMaxWidth(),
-                        leadingIcon = {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_mail),
-                                contentDescription = "Email Icon"
-                            )
-                        },
-                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
-                        keyboardActions = KeyboardActions(
-                            onNext = {
-                                if (gmail.isBlank()) {
-                                    emailError = true
-                                } else if (!Patterns.EMAIL_ADDRESS.matcher(gmail).matches()) {
-                                    showGmailError = true
-                                } else {
-                                    passwordFocusRequester.requestFocus()
-                                }
-                            }
-                        )
-                    )
-
-                    Spacer(modifier = Modifier.height(4.dp))
-
-                    //confirm gmail
-                    OutlinedTextField(
-                        value = confirmGmail,
-                        onValueChange = {
-                            confirmGmail = it
-                            showConfirmGmailError = false
-                            confirmEmailError = false
-                        },
-                        label = { Text("Confirm Email") },
-                        isError = showConfirmGmailError || confirmEmailError || showConfirmGmailMismatch,
-                        supportingText = {
-                            Text(
-                                text = when {
-                                    confirmEmailError -> "Confirm email field cannot be empty"
-                                    showConfirmGmailMismatch -> "Email accounts do not match"
-                                    else -> " "
-                                },
-                                color = if (showConfirmGmailError || confirmEmailError || showConfirmGmailMismatch)
-                                    MaterialTheme.colorScheme.error
-                                else Color.Transparent,
-                                style = MaterialTheme.typography.bodySmall,
-                                modifier = Modifier.height(20.dp)
-                            )
-                        },
-                        singleLine = true,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .focusRequester(confirmGmailFocusRequester),
-                        leadingIcon = {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_mail),
-                                contentDescription = "Confirm Email Icon"
-                            )
-                        },
-                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
-                        keyboardActions = KeyboardActions(
-                            onNext = {
-                                if (confirmGmail.isBlank()) {
-                                    confirmEmailError = true
-                                } else if (confirmGmail != gmail) {
-                                    showConfirmGmailError = true
-                                } else {
-                                    passwordFocusRequester.requestFocus()
-                                }
-                            }
-                        )
-                    )
-
-                    Spacer(modifier = Modifier.height(4.dp))
-
-// Password Field
-                    OutlinedTextField(
-                        value = password,
-                        onValueChange = {
-                            password = it
-                            passwordError = false
-                        },
-                        label = { Text("Enter your new Password") },
-                        singleLine = true,
-                        visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .focusRequester(passwordFocusRequester),
-                        leadingIcon = {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_password),
-                                contentDescription = "Password Icon"
-                            )
-                        },
-                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
-                        keyboardActions = KeyboardActions(
-                            onNext = {
-                                if (password.isBlank()) {
-                                    passwordError = true
-                                } else {
-                                    confirmPasswordFocusRequester.requestFocus()
-                                }
-                            }
-                        ),
-                        supportingText = {
-                            when {
-                                passwordError -> Text(
-                                    text = "Password field cannot be empty.",
-                                    color = MaterialTheme.colorScheme.error,
-                                    style = MaterialTheme.typography.bodySmall,
-                                    modifier = Modifier.height(20.dp)
-                                )
-                                password.isNotEmpty() -> Text(
-                                    text = buildAnnotatedString {
-                                        append("Password strength: ")
-                                        withStyle(style = SpanStyle(color = getPasswordStrength(password).second)) {
-                                            append(getPasswordStrength(password).first)
-                                        }
-                                    },
-                                    style = MaterialTheme.typography.bodySmall,
-                                    color = MaterialTheme.colorScheme.onSurface,
-                                    modifier = Modifier.height(20.dp)
-                                )
-                                else -> Text(
-                                    text = " ",
-                                    color = Color.Transparent,
-                                    modifier = Modifier.height(20.dp)
-                                )
-                            }
-                        },
-                        trailingIcon = {
-                            IconButton(onClick = { passwordVisible = !passwordVisible }) {
-                                Icon(
-                                    painter = painterResource(
-                                        id = if (passwordVisible) R.drawable.ic_visibility else R.drawable.ic_visibility_off
-                                    ),
-                                    contentDescription = if (passwordVisible) "Show password" else "Hide password"
-                                )
-                            }
-                        }
-                    )
-
-                    Spacer(modifier = Modifier.height(4.dp))
-
-// Confirm Password Field
-                    OutlinedTextField(
-                        value = confirmPassword,
-                        onValueChange = {
-                            confirmPassword = it
-                            confirmPasswordError = false
-                        },
-                        label = { Text("Confirm Password") },
-                        singleLine = true,
-                        visualTransformation = if (confirmPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .focusRequester(confirmPasswordFocusRequester),
-                        leadingIcon = {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_password),
-                                contentDescription = "Password Icon"
-                            )
-                        },
-                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-                        keyboardActions = KeyboardActions(
-                            onDone = {
-                                if (confirmPassword.isBlank()) {
-                                    confirmPasswordError = true
-                                } else if (password != confirmPassword) {
-                                    confirmPasswordError = true
-                                } else {
-                                    focusManager.clearFocus()
-                                }
-                            }
-                        ),
-                        isError = confirmPasswordError || showConfirmPasswordError,
-                        supportingText = {
-                            Text(
-                                text = when {
-                                    confirmPasswordError -> "Confirm password field cannot be empty."
-                                    showConfirmPasswordError -> "Passwords do not match"
-                                    else -> " "
-                                },
-                                color = if (confirmPasswordError || showConfirmPasswordError)
-                                    MaterialTheme.colorScheme.error
-                                else Color.Transparent,
-                                style = MaterialTheme.typography.bodySmall,
-                                modifier = Modifier.height(20.dp)
-                            )
-                        },
-                        trailingIcon = {
-                            IconButton(onClick = { confirmPasswordVisible = !confirmPasswordVisible }) {
-                                Icon(
-                                    painter = painterResource(
-                                        id = if (confirmPasswordVisible) R.drawable.ic_visibility else R.drawable.ic_visibility_off
-                                    ),
-                                    contentDescription = if (confirmPasswordVisible) "Show password" else "Hide password"
-                                )
-                            }
-                        }
-                    )
-                }
-
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 60.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-
-                    Button(
-                        onClick = {
-                            val emailEmpty = gmail.isBlank()
-                            val passwordEmpty = password.isBlank()
-                            val confirmPasswordEmpty = confirmPassword.isBlank()
-                            val emailInvalid = !emailEmpty && !Patterns.EMAIL_ADDRESS.matcher(gmail).matches()
-
-                            emailError = emailEmpty
-                            passwordError = passwordEmpty
-                            confirmPasswordError = confirmPasswordEmpty
-                            showGmailError = emailInvalid
-
-                            if (!emailEmpty && !emailInvalid && !passwordEmpty && !confirmPasswordEmpty) {
-                                // TODO: Proceed with navigation or logic
-                            }
-                        },
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = gradient_start,
-                            contentColor = Color.White
-                        ),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(48.dp)
-                            .padding(horizontal = 12.dp)
-                    ) {
-                        Text(text = "Next")
-                    }
-
-
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .pointerInput(Unit) {
+                detectTapGestures {
+                    focusManager.clearFocus()
+                    keyboardController?.hide()
                 }
             }
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .verticalScroll(scrollState)
+        ) {
+            Text(
+                text = "Monitoring",
+                fontWeight = FontWeight.Bold,
+                fontSize = 34.sp,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .padding(horizontal = 12.dp),
+            )
+
+            Text(
+                text = "Please make sure to answer the sheet with complete and accurate information. This is important for monitoring your OJT progress and ensuring proper documentation.",
+                fontSize = 14.sp,
+                lineHeight = 16.sp,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp)
+            )
+
+            Column(modifier = Modifier.padding(horizontal = 16.dp))
+            {
+                // Sex Dropdown (M or F)
+                ExposedDropdownMenuBox(
+                    expanded = sexExpanded,
+                    onExpandedChange = { sexExpanded = !sexExpanded }
+                ) {
+                    OutlinedTextField(
+                        value = sex,
+                        onValueChange = {},
+                        readOnly = true,
+                        label = { Text("Sex *") },
+                        placeholder = { Text("Select M or F") },
+                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = sexExpanded) },
+                        modifier = Modifier
+                            .menuAnchor()
+                            .fillMaxWidth()
+                            .padding(vertical = 4.dp)
+                    )
+                    ExposedDropdownMenu(
+                        expanded = sexExpanded,
+                        onDismissRequest = { sexExpanded = false }
+                    ) {
+                        DropdownMenuItem(
+                            text = { Text("Male (M)") },
+                            onClick = {
+                                sex = "M"
+                                sexExpanded = false
+                            }
+                        )
+                        DropdownMenuItem(
+                            text = { Text("Female (F)") },
+                            onClick = {
+                                sex = "F"
+                                sexExpanded = false
+                            }
+                        )
+                    }
+                }
+
+                // Complete Name of Host/Company
+                OutlinedTextField(
+                    value = companyName,
+                    onValueChange = { companyName = it },
+                    label = { Text("Complete Name of Host/Company (HTE) *") },
+                    placeholder = { Text("Enter company name") },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 4.dp)
+                )
+
+                // Complete Address of HTE
+                OutlinedTextField(
+                    value = companyAddress,
+                    onValueChange = { companyAddress = it },
+                    label = { Text("Complete Address of HTE *") },
+                    placeholder = { Text("Enter complete address") },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 4.dp)
+                )
+
+                // MOA Status Dropdown
+                ExposedDropdownMenuBox(
+                    expanded = moaExpanded,
+                    onExpandedChange = { moaExpanded = !moaExpanded }
+                ) {
+                    OutlinedTextField(
+                        value = moaStatus,
+                        onValueChange = {},
+                        readOnly = true,
+                        label = { Text("MOA Status *") },
+                        placeholder = { Text("Select MOA status") },
+                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = moaExpanded) },
+                        modifier = Modifier
+                            .menuAnchor()
+                            .fillMaxWidth()
+                            .padding(vertical = 4.dp)
+                    )
+                    ExposedDropdownMenu(
+                        expanded = moaExpanded,
+                        onDismissRequest = { moaExpanded = false }
+                    ) {
+                        DropdownMenuItem(
+                            text = { Text("Notarized and Submitted to the SIPP Coordinator") },
+                            onClick = {
+                                moaStatus = "Notarized and Submitted to the SIPP Coordinator"
+                                moaExpanded = false
+                            }
+                        )
+                        DropdownMenuItem(
+                            text = { Text("Still Processing") },
+                            onClick = {
+                                moaStatus = "Still Processing"
+                                moaExpanded = false
+                            }
+                        )
+                        DropdownMenuItem(
+                            text = { Text("None") },
+                            onClick = {
+                                moaStatus = "None"
+                                moaExpanded = false
+                            }
+                        )
+                    }
+                }
+
+                // Regional Location of the HTE
+                OutlinedTextField(
+                    value = regionalLocation,
+                    onValueChange = { regionalLocation = it },
+                    label = { Text("Regional Location of the HTE *") },
+                    placeholder = { Text("Enter regional location") },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 4.dp)
+                )
+
+                // Start of Internship (Date Picker)
+                val formattedDate = if (internshipStartDate != null) {
+                    SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).format(Date(internshipStartDate!!))
+                } else ""
+
+                OutlinedTextField(
+                    value = formattedDate,
+                    onValueChange = {},
+                    readOnly = true,
+                    label = { Text("Start of Internship *") },
+                    placeholder = { Text("Select start date") },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 4.dp),
+                    trailingIcon = {
+                        TextButton(onClick = { showDatePicker = true }) {
+                            Text("Select")
+                        }
+                    }
+                )
+
+                // How many hours of internship to render
+                OutlinedTextField(
+                    value = internshipHours,
+                    onValueChange = { newValue ->
+                        if (newValue.all { it.isDigit() }) {
+                            internshipHours = newValue
+                        }
+                    },
+                    label = { Text("Hours of Internship to Render *") },
+                    placeholder = { Text("Enter number of hours") },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 4.dp)
+                )
+
+                // Name of Manager/Immediate Supervisor
+                OutlinedTextField(
+                    value = managerName,
+                    onValueChange = { managerName = it },
+                    label = { Text("Name of Manager/Immediate Supervisor *") },
+                    placeholder = { Text("Enter manager's name") },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 4.dp)
+                )
+
+                // Manager/Immediate Supervisor Contact Number
+                OutlinedTextField(
+                    value = managerContact,
+                    onValueChange = { managerContact = it },
+                    label = { Text("Manager Contact Number *") },
+                    placeholder = { Text("Enter contact number") },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 4.dp)
+                )
+
+                Spacer(modifier = Modifier.height(20.dp))
+                // Submit Button
+                Button(
+                    onClick = {
+                        // TODO: Implement form submission logic
+                        // Validate and submit all the form data
+                        val workScheduleSummary = if (startDay.isNotEmpty() && endDay.isNotEmpty() && startTime.isNotEmpty() && endTime.isNotEmpty()) {
+                            "$startDay to $endDay, $startTime to $endTime"
+                        } else {
+                            ""
+                        }
+                        // Use workScheduleSummary for submission
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp)
+                        .height(48.dp)
+                ) {
+                    Text("Submit Monitoring Information")
+                }
+                Spacer(modifier = Modifier.height(34.dp))
+            }
+
+
         }
-    }
-}
 
-fun getPasswordStrength(password: String): Triple<String, Color, Float> {
-    val length = password.length
-    val letterCount = password.count { it.isLetter() }
-    val digitCount = password.count { it.isDigit() }
-    val symbolCount = password.count { !it.isLetterOrDigit() }
-
-    val strong = (letterCount >= 10 && digitCount == 0 && symbolCount == 0) ||
-            (letterCount >= 8 && digitCount >= 2) ||
-            (letterCount >= 9 && digitCount >= 1) ||
-            (letterCount >= 5 && digitCount >= 2 && symbolCount >= 1) ||
-            (length > 9)
-
-    val medium = !strong && length >= 8 && letterCount >= 5 && (digitCount >= 1 || symbolCount >= 1)
-
-    return when {
-        strong -> Triple("Strong", Color(0xFF2E7D32), 1f)      // Full green bar
-        medium -> Triple("Medium", Color(0xFFF9A825), 0.6f)   // Yellow bar (60%)
-        else -> Triple("Weak", Color.Red, 0.3f)               // Red bar (30%)
+        // Date Picker Dialog
+        if (showDatePicker) {
+            DatePickerDialog(
+                onDismissRequest = { showDatePicker = false },
+                confirmButton = {
+                    TextButton(
+                        onClick = {
+                            internshipStartDate = datePickerState.selectedDateMillis
+                            showDatePicker = false
+                        }
+                    ) {
+                        Text("OK")
+                    }
+                },
+                dismissButton = {
+                    TextButton(
+                        onClick = { showDatePicker = false }
+                    ) {
+                        Text("Cancel")
+                    }
+                }
+            ) {
+                DatePicker(state = datePickerState)
+            }
+        }
     }
 }
