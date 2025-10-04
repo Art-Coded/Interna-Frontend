@@ -61,7 +61,7 @@ import com.skydoves.balloon.compose.setBackgroundColor
 @Composable
 fun IntroScreen(navController: NavController) {
 
-    val pageCount = 4
+    val pageCount = 5
     val pagerState = rememberPagerState(initialPage = 0, pageCount = { pageCount })
     val isDarkTheme = isSystemInDarkTheme()
 
@@ -179,25 +179,10 @@ fun IntroScreen(navController: NavController) {
                     0 -> SlideOne()
                     1 -> SlideTwo()
                     2 -> SlideThree()
-                    3 -> SlideFour(navController = navController)
+                    3 -> SlideFour()
+                    4 -> SlideFive(navController = navController)
                 }
             }
         }
     }
-
 }
-
-//Monitoring Sheet input field requirements
-
-//Sex M or F (Check box)
-//Complete Name of Host/Company  (HTE) (Input field)
-//Complete Address of HTE (input field)
-//MOA   Notarized and Submitted to the SIPP Coordinator|Still Processing|None (Check boxes among those 3)
-//Regional Location of the HTE (Input field)
-//Start of Internship (date picker)
-//How many hours of internship to render (input field in numbers)
-//Name of Manager/Immediate Supervisor (Input field)
-//Manager/Immediate Supervisor Contact Number (input number)
-
-//Pin Your Workplace (Google maps API drag and drop with coordinates display)
-//Work Schedule (Set work days per week and work hours per day)
